@@ -39,6 +39,13 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 @media(max-width:800px){.profile-top{grid-template-columns:1fr;gap:28px}.personality-panel{width:100%;max-width:440px;justify-self:center}.profile-heading h2{font-size:26px}.profile-bio p{font-size:13px}.self-knowledge{margin-top:25px}.support-section{display:flex;gap:20px;padding:22px 0 12px}.support-copy h2{font-size:16px}.support-copy>p:not(.section-label){font-size:11px}.support-codes{gap:14px}.payment-code{width:108px}.payment-card figcaption{font-size:10px}}
 @media(max-width:540px){.profile-section{padding-top:25px}.profile-copy blockquote{font-size:19px;margin:22px 0}.self-knowledge{grid-template-columns:1fr;gap:14px}.self-card{padding:22px}.profile-site-note{align-items:flex-start;flex-direction:column;gap:8px}#bigfive-frame{height:640px}.support-section{flex-direction:column;align-items:flex-start;gap:16px}.support-codes{justify-content:flex-start;gap:18px}.payment-code{width:104px}.support-copy h2{font-size:16px}.support-copy>p:not(.section-label){font-size:11px}}
 
+
+/* Compact profile: editable headings and one aligned details column. */
+.profile-section{margin:12px 0 20px;padding-top:25px}.profile-top{grid-template-columns:minmax(0,1fr) 352px;gap:40px}.profile-copy{padding-top:0}.profile-heading{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:8px 0 0}.profile-heading h2{font-size:25px;margin:0}.profile-copy blockquote{font-size:19px;margin:17px 0 13px;padding-left:14px}.profile-bio p{font-size:12px;line-height:1.9;margin:7px 0;white-space:pre-line}.profile-details{margin-top:16px}.profile-detail-row{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;padding:11px 0;border-top:1px solid #e3e8db}.profile-detail-row h3{font-size:12px;line-height:1.8;margin:2px 0 0;white-space:normal}.profile-detail-row .profile-chips{gap:6px}.profile-detail-row .profile-chips span{font-size:11px;line-height:1.5;padding:3px 8px}.profile-strength-list{list-style:none;display:flex;gap:4px 16px;flex-wrap:wrap;margin:0;padding:0;color:#586654;font-size:11px;line-height:1.9}.profile-strength-list li::before{content:"·";color:#93ac73;margin-right:6px}.profile-site-note{margin-top:17px;padding:13px 0}.personality-heading{margin-bottom:10px}.personality-heading h3{font-size:13px}.bigfive-viewport{width:100%;height:464px;overflow:hidden;border-radius:13px;background:#14141d;position:relative}#bigfive-frame{position:absolute;top:0;left:0;width:440px;max-width:none;height:580px;transform:scale(var(--bigfive-scale,.8));transform-origin:top left;border-radius:16px}.personality-caption{margin-top:10px;line-height:1.8}
+@media(max-width:1000px){.profile-top{grid-template-columns:minmax(0,1fr) 320px;gap:24px}.bigfive-viewport{height:422px;--bigfive-scale:.727273}.profile-detail-row{grid-template-columns:84px minmax(0,1fr);gap:10px}.profile-heading{gap:8px}.profile-heading h2{font-size:23px}}
+@media(max-width:800px){.profile-top{grid-template-columns:1fr;gap:22px}.personality-panel{max-width:352px}.bigfive-viewport{height:464px;--bigfive-scale:.8}.profile-detail-row{grid-template-columns:100px minmax(0,1fr)}}
+@media(max-width:540px){.profile-section{padding-top:20px}.profile-heading h2{font-size:23px}.profile-copy blockquote{font-size:18px;margin:15px 0 12px}.profile-detail-row{grid-template-columns:1fr;gap:7px;padding:10px 0}.profile-detail-row h3{margin:0}.profile-bio p{font-size:12px}.profile-site-note{margin-top:15px}.personality-caption{font-size:10px}#bigfive-frame{height:580px}}
+
 </style>
 </head>
 <body>
@@ -92,17 +99,20 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <p class="section-label">A LITTLE ABOUT ME</p>
 <div class="profile-heading"><h2 id="about-title">你好，我是 <span id="profile-name">Sharey99</span>。</h2><div class="profile-labels" id="profile-labels"><span>ENFJ-T</span><span>理想主义</span></div></div>
 <blockquote id="profile-motto">知世故而不世故，历圆滑而弥天真。</blockquote>
-<div class="profile-bio" id="profile-bio"><p>我是一个有一点偏理想主义的人。比起物质上的追求，我更在意精神上的满足。</p><p>我也会在能力范围内，尽量给自己好一点的东西。但如果需要为此付出太多，我可能就会放下。比起品牌，我更看重东西能不能满足自己的需要。</p><p>生活里，我更喜欢简单的家常便饭。想保持真诚，也愿意把好的经验、好用的东西和网站分享给别人。</p></div>
-<div class="profile-values"><h3>我珍视的事</h3><div class="profile-chips" id="profile-values"><span>真诚</span><span>尊重</span><span>助人</span><span>谦敬</span><span>仁爱</span><span>坚韧</span><span>勤奋</span><span>自由</span><span>无私</span><span>顺应自然</span></div></div>
+<div class="profile-bio" id="profile-bio"><p>我是一个有一点偏理想主义的人。比起物质上的追求，我更在意精神上的满足。</p><p>能力范围内，会尽量给自己好一点的东西；但如果需要为此付出太多，可能就会放下。
+生活里，尽可能保持真诚，也喜欢把好的经验、好用的东西和网站分享给别人。</p><p>终极理想：“安得广厦千万间，大庇天下寒士俱欢颜”……</p></div>
+<div class="profile-details">
+<div class="profile-detail-row"><h3 id="profile-values-title">我珍视的事</h3><div class="profile-chips" id="profile-values"><span>真诚</span><span>尊重</span><span>助人</span><span>谦敬</span><span>仁爱</span><span>坚韧</span><span>勤奋</span><span>自由</span><span>无私</span><span>顺应自然</span></div></div>
+<div class="profile-detail-row"><h3 id="profile-strengths-title">我的优长</h3><ul class="profile-strength-list" id="profile-strengths"><li>真诚、实在、谦虚</li><li>肯学，爱琢磨</li><li>有耐心，能面对枯燥</li><li>爱分享好的经验与好用的东西</li><li>愿意助人</li></ul></div>
+<div class="profile-detail-row"><h3 id="profile-challenges-title">还在改进的地方</h3><div class="profile-chips" id="profile-challenges"><span>拖延</span><span>犹豫</span><span>执拗</span><span>怕麻烦</span><span>追求完美</span><span>理想主义</span></div></div>
+<div class="profile-detail-row"><h3 id="profile-personality-title">我眼中的自己</h3><div class="profile-chips" id="profile-personality"><span>随和</span><span>灵活</span><span>幽默</span><span>感性</span><span>谨慎</span><span>诚实</span><span>耐心</span><span>责任心强</span><span>完美主义</span><span>优柔寡断</span><span>理想主义</span></div></div>
+</div>
 </div>
 <aside class="personality-panel" id="personality-panel" aria-labelledby="personality-title">
 <div class="personality-heading"><h3 id="personality-title">我的大五人格</h3><span>一次自测记录</span></div>
-<iframe id="bigfive-frame" data-src="https://bigfivepersonality.me/zh/embed/yhPrLRtV" title="Sharey99 的大五人格测试结果" width="440" height="580" loading="lazy" referrerpolicy="no-referrer"></iframe>
+<div class="bigfive-viewport"><iframe id="bigfive-frame" data-src="https://bigfivepersonality.me/zh/embed/yhPrLRtV" title="Sharey99 的大五人格测试结果" width="440" height="580" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
 <p class="personality-caption">这是了解我的一个侧面，也允许自己慢慢变化。<br>结果由 <a href="https://bigfivepersonality.me/zh" target="_blank" rel="noopener noreferrer">Big Five Personality</a> 提供 · <a id="bigfive-report" href="https://bigfivepersonality.me/zh/r/yhPrLRtV" target="_blank" rel="noopener noreferrer">单独打开 ↗</a></p>
 </aside></div>
-<div class="self-knowledge"><div class="self-card"><p class="section-label">WHAT I BRING</p><h3>我的优长</h3><ul id="profile-strengths"><li>真诚、实在、谦虚</li><li>肯学，爱琢磨</li><li>有耐心，能面对枯燥</li><li>爱分享好的经验与好用的东西</li><li>愿意助人</li></ul></div>
-<div class="self-card"><p class="section-label">STILL GROWING</p><h3>还在改进的地方</h3><div class="profile-chips" id="profile-challenges"><span>拖延</span><span>犹豫</span><span>执拗</span><span>怕麻烦</span><span>追求完美</span><span>理想主义</span></div><p class="self-note">愿意看见自己的局限，也继续往前走。</p></div></div>
-<div class="profile-traits"><h3>我眼中的自己</h3><div class="profile-chips" id="profile-personality"><span>随和</span><span>灵活</span><span>幽默</span><span>感性</span><span>谨慎</span><span>诚实</span><span>耐心</span><span>责任心强</span><span>完美主义</span><span>优柔寡断</span><span>理想主义</span></div></div>
 <div class="profile-site-note"><span>这个小站，也是我爱琢磨、爱分享的一部分。</span><button class="text-button" data-open-policy type="button">小站收录原则 ↗</button></div>
 </section>
 <section class="support-section" id="support" aria-labelledby="support-title">

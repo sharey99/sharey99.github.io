@@ -3,6 +3,10 @@
 const $=id=>document.getElementById(id);
 const list=(id,values,tag='span')=>{if(!Array.isArray(values))return;$(id).replaceChildren(...values.filter(v=>typeof v==='string'&&v.trim()).map(v=>{const e=document.createElement(tag);e.textContent=v;return e;}));};
 const frame=$('bigfive-frame');
+const frameBox=frame.parentElement;
+const resizeFrame=()=>{const scale=Math.min(1,frameBox.clientWidth/440);frameBox.style.setProperty('--bigfive-scale',String(scale));frameBox.style.height=(580*scale)+'px';};
+new ResizeObserver(resizeFrame).observe(frameBox);
+resizeFrame();
 function setEmbed(value,visible=true){
  const valid=typeof value==='string'&&/^https:\/\/bigfivepersonality\.me\/[a-zA-Z-]+\/embed\/[a-zA-Z0-9_-]+\/?$/.test(value);
  const show=visible!==false&&valid;
@@ -18,6 +22,9 @@ async function init(){
   if(!p||typeof p!=='object'||Array.isArray(p))throw new Error('Invalid profile');
   if(typeof p.displayName==='string')$('profile-name').textContent=p.displayName;
   if(typeof p.motto==='string')$('profile-motto').textContent=p.motto;
+  for(const [key,id] of Object.entries({valuesTitle:'profile-values-title',strengthsTitle:'profile-strengths-title',challengesTitle:'profile-challenges-title',personalityTitle:'profile-personality-title',bigFiveTitle:'personality-title'})){
+   if(typeof p[key]==='string'&&p[key].trim())$(id).textContent=p[key];
+  }
   list('profile-labels',p.labels);list('profile-bio',p.bio,'p');list('profile-values',p.values);
   list('profile-strengths',p.strengths,'li');list('profile-challenges',p.challenges);list('profile-personality',p.personality);
   setEmbed(p.bigFiveEmbed,p.showBigFive);

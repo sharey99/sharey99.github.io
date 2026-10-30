@@ -51,5 +51,10 @@
     "理想主义"
   ],
   "showBigFive": true,
-  "bigFiveEmbed": "https://bigfivepersonality.me/zh/embed/yhPrLRtV"
+  "bigFiveEmbed": "https://bigfivepersonality.me/zh/embed/yhPrLRtV",
+  "valuesTitle": "我珍视的事",
+  "strengthsTitle": "我的优长",
+  "challengesTitle": "还在改进的地方",
+  "personalityTitle": "我眼中的自己",
+  "bigFiveTitle": "我的大五人格"
 }

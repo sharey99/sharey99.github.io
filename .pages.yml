@@ -363,10 +363,22 @@
           "description": "每一项是一段文字。"
         },
         {
+          "name": "valuesTitle",
+          "label": "价值观 · 小标题",
+          "type": "string",
+          "description": "修改这里会同步修改主页上的对应标题。"
+        },
+        {
           "name": "values",
           "label": "价值观关键词",
           "type": "string",
           "list": true
+        },
+        {
+          "name": "strengthsTitle",
+          "label": "优长 · 小标题",
+          "type": "string",
+          "description": "修改这里会同步修改主页上的对应标题。"
         },
         {
           "name": "strengths",
@@ -375,16 +387,34 @@
           "list": true
         },
         {
+          "name": "challengesTitle",
+          "label": "改进之处 · 小标题",
+          "type": "string",
+          "description": "修改这里会同步修改主页上的对应标题。"
+        },
+        {
           "name": "challenges",
           "label": "还在改进的地方",
           "type": "string",
           "list": true
         },
         {
+          "name": "personalityTitle",
+          "label": "性格 · 小标题",
+          "type": "string",
+          "description": "修改这里会同步修改主页上的对应标题。"
+        },
+        {
           "name": "personality",
           "label": "我眼中的自己",
           "type": "string",
           "list": true
+        },
+        {
+          "name": "bigFiveTitle",
+          "label": "大五人格 · 小标题",
+          "type": "string",
+          "description": "修改这里会同步修改主页上的对应标题。"
         },
         {
           "name": "showBigFive",
