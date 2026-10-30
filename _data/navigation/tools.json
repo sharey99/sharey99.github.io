@@ -2,5 +2,21 @@
   "title": "网站收藏",
   "order": 20,
   "hidden": false,
-  "children": []
+  "children": [
+    {
+      "id": "9a00aa2e-b2ca-4789-87be-3350a240e334",
+      "title": "聚合导航",
+      "order": 1
+    },
+    {
+      "id": "87ff92ab-7f1a-46e6-833f-aa30bab1f30f",
+      "title": "资源网站",
+      "order": 2
+    },
+    {
+      "id": "2ad38163-5545-4f52-91af-24872c84e74c",
+      "title": "工具网站",
+      "order": 3
+    }
+  ]
 }

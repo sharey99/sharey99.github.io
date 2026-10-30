@@ -204,6 +204,32 @@
               "required": true
             },
             {
+              "name": "subcategory",
+              "label": "所属子分类（最后一级）",
+              "type": "select",
+              "description": "可留在父栏目，或选择下面的子分类。",
+              "options": {
+                "values": [
+                  {
+                    "name": "none",
+                    "label": "未分类"
+                  },
+                  {
+                    "name": "9a00aa2e-b2ca-4789-87be-3350a240e334",
+                    "label": "聚合导航"
+                  },
+                  {
+                    "name": "87ff92ab-7f1a-46e6-833f-aa30bab1f30f",
+                    "label": "资源网站"
+                  },
+                  {
+                    "name": "2ad38163-5545-4f52-91af-24872c84e74c",
+                    "label": "工具网站"
+                  }
+                ]
+              }
+            },
+            {
               "name": "description",
               "label": "一句话简介",
               "type": "text",
