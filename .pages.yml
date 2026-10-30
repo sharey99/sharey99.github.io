@@ -79,6 +79,44 @@
                   "name": "hidden",
                   "label": "暂时隐藏",
                   "type": "boolean"
+                },
+                {
+                  "name": "children",
+                  "label": "子分类（最后一级）",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{title}"
+                    }
+                  },
+                  "description": "在网站收藏、游戏攻略等内容栏目下添加；这里只能再分这一层。“全部收藏”是汇总入口，无需子分类。",
+                  "fields": [
+                    {
+                      "name": "key",
+                      "type": "uuid",
+                      "hidden": true,
+                      "required": true,
+                      "options": {
+                        "editable": false,
+                        "generate": false
+                      }
+                    },
+                    {
+                      "name": "title",
+                      "label": "子分类名称",
+                      "type": "string",
+                      "required": true,
+                      "options": {
+                        "maxlength": 40
+                      }
+                    },
+                    {
+                      "name": "order",
+                      "label": "显示顺序",
+                      "type": "number"
+                    }
+                  ]
                 }
               ]
             },

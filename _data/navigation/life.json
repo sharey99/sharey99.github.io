@@ -1,5 +1,6 @@
 {
   "title": "人生攻略",
   "order": 60,
-  "hidden": false
+  "hidden": false,
+  "children": []
 }

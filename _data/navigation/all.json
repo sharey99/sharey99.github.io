@@ -1,5 +1,6 @@
 {
   "title": "全部收藏",
   "order": 10,
-  "hidden": false
+  "hidden": false,
+  "children": []
 }
