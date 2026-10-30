@@ -86,7 +86,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <svg class="art-spark" width="35" height="35" viewBox="0 0 40 40"><path d="M20 2v36M2 20h36M7 7l26 26M7 33 33 7" stroke="currentColor" stroke-width="2"/></svg>
 <span class="art-star">✧</span><span class="art-dots">···</span></div>
 </section>
-<div class="intro-bar"><span class="intro-label"><span class="status-dot" aria-hidden="true"></span>一个持续生长的个人收藏夹</span><div class="intro-stats"><span><strong id="total-count">—</strong> 个条目</span><span><strong>6</strong> 个角落</span><span>始于 <strong>2026</strong></span></div></div>
+<div class="intro-bar"><span class="intro-label"><span class="status-dot" aria-hidden="true"></span>一个持续生长的个人收藏夹</span><div class="intro-stats"><span><strong id="total-count">—</strong> 个条目</span><span><strong id="category-count">6</strong> 个角落</span><span>始于 <strong>2026</strong></span></div></div>
 <section class="collection" id="collection" aria-labelledby="collection-title">
 <div class="collection-top"><div><p class="section-label" id="collection-eyebrow">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
 </div>
@@ -143,10 +143,11 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <dialog id="book-preview" aria-labelledby="book-preview-title"><div class="dialog-head"><div><p class="section-label">BOOK PREVIEW</p><h2 id="book-preview-title"></h2></div><div class="book-preview-head-actions"><a id="book-preview-download" href="#" download>下载 ↓</a><form method="dialog"><button class="close-dialog" aria-label="关闭书籍预览" autofocus>×</button></form></div></div><div class="book-preview-tools" id="book-preview-tools" hidden><label>章节 <select id="book-chapters" aria-label="选择章节"></select></label><button type="button" id="book-prev">上一章</button><button type="button" id="book-next">下一章</button><label>字号 <select id="book-font" aria-label="阅读字号"><option value="16">小</option><option value="18" selected>中</option><option value="21">大</option><option value="24">特大</option></select></label></div><div id="book-preview-content" class="book-preview-content"></div><p id="book-preview-status" class="book-preview-status" role="status" aria-live="polite"></p></dialog>
 <script src="./assets/book-preview.js"></script>
 <!-- 内容由同目录 content.json 提供，使用 Pages CMS 在线维护。 -->
+<script src="./assets/navigation.js"></script>
 <script>
 'use strict';
 // 分类 id 保持不变；分类名称可以按喜好修改。
-const CATEGORIES = [
+let CATEGORIES = [
 {id:'all',label:'全部收藏'},{id:'tools',label:'好用网站'},{id:'fun',label:'有趣网站'},
 {id:'resources',label:'资源书架'},{id:'games',label:'游戏攻略'},{id:'life',label:'人生攻略'},{id:'notes',label:'随笔笔记'}
 ];
@@ -232,7 +233,7 @@ const emptyShelf=activeCategory==='resources'&&!items.some(i=>i.category==='reso
 $('empty').querySelector('h3').textContent=emptyShelf?'资源书架还空着':'这个角落暂时没有找到';
 $('empty').querySelector('p').textContent=emptyShelf?'书籍、图片与视频，会慢慢整理到这里。':'试试更短的关键词，或者换个分类逛逛。';
 $('clear-search').hidden=!$('search').value;
-const category=CATEGORIES.find(c=>c.id===activeCategory).label;
+const category=CATEGORIES.find(c=>c.id===activeCategory)?.label||'全部收藏';
 $('result-status').textContent=category+' · '+filtered.length+' 个条目'+($('search').value.trim()?' · 搜索结果':' · 慢慢看，总有新的发现');
 }
 const stickyHeader=document.querySelector('.site-header');
@@ -351,7 +352,7 @@ async function loadItems(){
 if(location.protocol==='file:')throw new Error('请通过 HTTP 预览，或上传 GitHub Pages 后访问。');
 const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
 try{
-const sourceGroups={'content.json':['tools','fun','games','life','notes'],'resources.json':['book','image','video']};
+const sourceGroups={'content.json':CATEGORIES.filter(c=>!['all','resources'].includes(c.id)).map(c=>c.id),'resources.json':['book','image','video']};
 const sources=await Promise.allSettled(['content.json','resources.json'].map(async file=>{
 const response=await fetch('./'+file,{cache:'no-store',signal:controller.signal});
 if(!response.ok)throw new Error(file+' 加载失败');
@@ -372,9 +373,9 @@ const result=[],issues=[];
 sources.forEach((source,sourceIndex)=>{
 if(source.status==='rejected'){issues.push(sourceIndex===0?'收藏与笔记暂时无法加载':'资源书架暂时无法加载');console.warn(source.reason);return;}
 source.value.forEach((entry,index)=>{try{
-if(sourceIndex===1)result.push(normalizeResource(entry,index));
+if(sourceIndex===1){if(CATEGORIES.some(c=>c.id==='resources'))result.push(normalizeResource(entry,index));}
 else if(entry?.category==='resources'&&entry.resourceType)result.push(normalizeResource(entry,'legacy-'+index));
-else result.push(normalizeItem(entry?.category==='resources'?{...entry,category:'tools'}:entry,index));
+else if(CATEGORIES.some(c=>c.id===entry?.category))result.push(normalizeItem(entry,index));
 }catch(error){issues.push('有一条内容格式不完整');console.warn(error.message);}});
 });
 if(sources.every(s=>s.status==='rejected'))throw new Error('内容暂时无法加载，请刷新重试。');
@@ -382,15 +383,21 @@ if(issues.length)$('data-notice').textContent=[...new Set(issues)].join('；')+'
 return result;
 }finally{clearTimeout(timeout);}
 }
+async function loadNavigation(){
+ const response=await fetch('./navigation.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});
+ if(!response.ok)throw new Error('分类配置暂时无法加载，请刷新重试。');
+ CATEGORIES=window.SiteNavigation.normalize(await response.json());
+}
 async function init(){
 $('collection-meta').hidden=false;$('result-status').textContent='正在打开收藏夹…';
+await loadNavigation();
 items=await loadItems();
 for(const category of CATEGORIES){
 const button=make('button','filter');button.type='button';button.dataset.category=category.id;
 button.append(document.createTextNode(category.label),make('span','filter-count'));
 button.addEventListener('click',()=>selectCategory(category.id));$('filters').append(button);
 }
-$('total-count').textContent=items.length;$('year').textContent=new Date().getFullYear();
+$('category-count').textContent=CATEGORIES.filter(c=>c.id!=='all').length;$('total-count').textContent=items.length;$('year').textContent=new Date().getFullYear();
 $('search-form').hidden=false;$('collection-meta').hidden=false;$('random-button').hidden=items.length===0;
 $('search-form').addEventListener('submit',e=>{e.preventDefault();revealCollection(true);});
 $('search').addEventListener('input',()=>{render();revealCollection();});

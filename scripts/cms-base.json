@@ -1,0 +1,801 @@
+{
+  "media": {
+    "input": "files",
+    "output": "/files",
+    "rename": false,
+    "extensions": [
+      "pdf",
+      "epub",
+      "txt",
+      "md",
+      "docx",
+      "xlsx",
+      "pptx",
+      "png",
+      "jpg",
+      "jpeg",
+      "webp",
+      "gif",
+      "mp4",
+      "webm",
+      "vtt"
+    ]
+  },
+  "home": {
+    "name": "home",
+    "label": "主页 · 全部收藏",
+    "type": "group",
+    "items": [
+      {
+        "name": "home-introduction",
+        "label": "开场介绍与收藏标题",
+        "type": "file",
+        "path": "_data/home/introduction.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "titleFirst",
+            "label": "一级标题 · 第一行",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "titleSecond",
+            "label": "一级标题 · 第二行",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "eyebrow",
+            "label": "标题上方短句",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "label": "开场简介",
+            "type": "text"
+          },
+          {
+            "name": "collectionTitle",
+            "label": "二级标题 · 收藏区域",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "collectionEyebrow",
+            "label": "收藏标题上方短句",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "collection": {
+    "name": "tools",
+    "label": "好用网站",
+    "type": "collection",
+    "path": "_data/cards/tools",
+    "format": "json",
+    "filename": {
+      "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+      "field": false
+    },
+    "subfolders": false,
+    "exclude": [
+      ".gitkeep"
+    ],
+    "view": {
+      "primary": "title",
+      "fields": [
+        "title",
+        "description",
+        "date"
+      ],
+      "sort": [
+        "order",
+        "date",
+        "title"
+      ],
+      "search": [
+        "title",
+        "description",
+        "tags"
+      ],
+      "default": {
+        "sort": "order",
+        "order": "asc"
+      }
+    },
+    "fields": [
+      {
+        "name": "title",
+        "label": "一级标题 · 卡片名称",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "label": "一句话简介",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "url",
+        "label": "外部网址（可选）",
+        "type": "string",
+        "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+        "pattern": {
+          "regex": "^(https://[^\\s]+)?$",
+          "message": "请填 https:// 开头的网址；没有外链则留空。"
+        }
+      },
+      {
+        "name": "attachment",
+        "label": "附件（可选）",
+        "type": "file",
+        "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+      },
+      {
+        "name": "body",
+        "label": "文章正文 · 段落",
+        "type": "object",
+        "list": {
+          "collapsible": {
+            "collapsed": true,
+            "summary": "{heading}（第 {index} 段）"
+          }
+        },
+        "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+        "fields": [
+          {
+            "name": "heading",
+            "label": "二级标题 · 正文小标题（可选）",
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "label": "这一段的正文",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "label": "标签（可选）",
+        "type": "string",
+        "list": true
+      },
+      {
+        "name": "date",
+        "label": "收录日期",
+        "type": "date",
+        "required": true,
+        "options": {
+          "format": "yyyy-MM-dd"
+        }
+      },
+      {
+        "name": "kind",
+        "label": "角标文字（可选）",
+        "type": "string",
+        "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+      },
+      {
+        "name": "icon",
+        "label": "图标（可选）",
+        "type": "select",
+        "options": {
+          "values": [
+            {
+              "name": "pen",
+              "label": "画笔"
+            },
+            {
+              "name": "spark",
+              "label": "星光"
+            },
+            {
+              "name": "play",
+              "label": "视频"
+            },
+            {
+              "name": "image",
+              "label": "图像"
+            },
+            {
+              "name": "radio",
+              "label": "电台"
+            },
+            {
+              "name": "book",
+              "label": "书籍"
+            },
+            {
+              "name": "game",
+              "label": "游戏"
+            },
+            {
+              "name": "code",
+              "label": "代码"
+            },
+            {
+              "name": "leaf",
+              "label": "生活"
+            },
+            {
+              "name": "note",
+              "label": "笔记"
+            }
+          ]
+        }
+      },
+      {
+        "name": "tone",
+        "label": "图标颜色（可选）",
+        "type": "select",
+        "options": {
+          "values": [
+            {
+              "name": "green",
+              "label": "绿色"
+            },
+            {
+              "name": "blue",
+              "label": "蓝色"
+            },
+            {
+              "name": "peach",
+              "label": "浅橙"
+            },
+            {
+              "name": "purple",
+              "label": "紫色"
+            },
+            {
+              "name": "yellow",
+              "label": "黄色"
+            }
+          ]
+        }
+      },
+      {
+        "name": "order",
+        "label": "卡片排序（可选）",
+        "type": "number",
+        "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+      }
+    ]
+  },
+  "resources": {
+    "name": "resources",
+    "label": "资源书架",
+    "type": "group",
+    "items": [
+      {
+        "name": "resources-book",
+        "label": "书籍",
+        "type": "collection",
+        "path": "_data/resources/book",
+        "format": "json",
+        "filename": {
+          "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+          "field": false
+        },
+        "subfolders": false,
+        "exclude": [
+          ".gitkeep"
+        ],
+        "view": {
+          "primary": "title",
+          "fields": [
+            "title",
+            "description",
+            "date"
+          ],
+          "sort": [
+            "order",
+            "date",
+            "title"
+          ],
+          "search": [
+            "title",
+            "description",
+            "tags"
+          ],
+          "default": {
+            "sort": "order",
+            "order": "asc"
+          }
+        },
+        "fields": [
+          {
+            "name": "title",
+            "label": "一级标题 · 资源名称",
+            "type": "string",
+            "required": true,
+            "description": "建议填写实际书名或作品名称。"
+          },
+          {
+            "name": "description",
+            "label": "资源简介",
+            "type": "text",
+            "required": true,
+            "description": "介绍内容、适合谁；图片请写明画面，视频可补充内容摘要。"
+          },
+          {
+            "name": "file",
+            "label": "资源文件",
+            "type": "file",
+            "required": true,
+            "description": "上传 PDF 或 EPUB 书籍文件。",
+            "options": {
+              "extensions": [
+                "pdf",
+                "epub"
+              ]
+            }
+          },
+          {
+            "name": "downloadName",
+            "label": "下载文件名（可选）",
+            "type": "string",
+            "description": "不必填写扩展名。留空时保留原文件名；旧的 file 文件使用资源名称。"
+          },
+          {
+            "name": "cover",
+            "label": "封面 / 视频海报（可选）",
+            "type": "image",
+            "options": {
+              "extensions": [
+                "jpg",
+                "jpeg",
+                "png",
+                "webp",
+                "gif"
+              ]
+            }
+          },
+          {
+            "name": "author",
+            "label": "作者 / 创作者（可选）",
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "label": "标签（可选）",
+            "type": "string",
+            "list": true
+          },
+          {
+            "name": "date",
+            "label": "收录日期",
+            "type": "date",
+            "required": true,
+            "options": {
+              "format": "yyyy-MM-dd"
+            }
+          },
+          {
+            "name": "order",
+            "label": "卡片排序（可选）",
+            "type": "number",
+            "description": "数字越小越靠前。"
+          }
+        ]
+      },
+      {
+        "name": "resources-image",
+        "label": "图片",
+        "type": "collection",
+        "path": "_data/resources/image",
+        "format": "json",
+        "filename": {
+          "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+          "field": false
+        },
+        "subfolders": false,
+        "exclude": [
+          ".gitkeep"
+        ],
+        "view": {
+          "primary": "title",
+          "fields": [
+            "title",
+            "description",
+            "date"
+          ],
+          "sort": [
+            "order",
+            "date",
+            "title"
+          ],
+          "search": [
+            "title",
+            "description",
+            "tags"
+          ],
+          "default": {
+            "sort": "order",
+            "order": "asc"
+          }
+        },
+        "fields": [
+          {
+            "name": "title",
+            "label": "一级标题 · 资源名称",
+            "type": "string",
+            "required": true,
+            "description": "建议填写实际书名或作品名称。"
+          },
+          {
+            "name": "description",
+            "label": "资源简介",
+            "type": "text",
+            "required": true,
+            "description": "介绍内容、适合谁；图片请写明画面，视频可补充内容摘要。"
+          },
+          {
+            "name": "file",
+            "label": "资源文件",
+            "type": "file",
+            "required": true,
+            "description": "上传有权公开的图片文件。",
+            "options": {
+              "extensions": [
+                "jpg",
+                "jpeg",
+                "png",
+                "webp",
+                "gif"
+              ]
+            }
+          },
+          {
+            "name": "downloadName",
+            "label": "下载文件名（可选）",
+            "type": "string",
+            "description": "不必填写扩展名。留空时保留原文件名；旧的 file 文件使用资源名称。"
+          },
+          {
+            "name": "cover",
+            "label": "封面 / 视频海报（可选）",
+            "type": "image",
+            "options": {
+              "extensions": [
+                "jpg",
+                "jpeg",
+                "png",
+                "webp",
+                "gif"
+              ]
+            }
+          },
+          {
+            "name": "author",
+            "label": "作者 / 创作者（可选）",
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "label": "标签（可选）",
+            "type": "string",
+            "list": true
+          },
+          {
+            "name": "date",
+            "label": "收录日期",
+            "type": "date",
+            "required": true,
+            "options": {
+              "format": "yyyy-MM-dd"
+            }
+          },
+          {
+            "name": "order",
+            "label": "卡片排序（可选）",
+            "type": "number",
+            "description": "数字越小越靠前。"
+          }
+        ]
+      },
+      {
+        "name": "resources-video",
+        "label": "视频",
+        "type": "collection",
+        "path": "_data/resources/video",
+        "format": "json",
+        "filename": {
+          "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+          "field": false
+        },
+        "subfolders": false,
+        "exclude": [
+          ".gitkeep"
+        ],
+        "view": {
+          "primary": "title",
+          "fields": [
+            "title",
+            "description",
+            "date"
+          ],
+          "sort": [
+            "order",
+            "date",
+            "title"
+          ],
+          "search": [
+            "title",
+            "description",
+            "tags"
+          ],
+          "default": {
+            "sort": "order",
+            "order": "asc"
+          }
+        },
+        "fields": [
+          {
+            "name": "title",
+            "label": "一级标题 · 资源名称",
+            "type": "string",
+            "required": true,
+            "description": "建议填写实际书名或作品名称。"
+          },
+          {
+            "name": "description",
+            "label": "资源简介",
+            "type": "text",
+            "required": true,
+            "description": "介绍内容、适合谁；图片请写明画面，视频可补充内容摘要。"
+          },
+          {
+            "name": "file",
+            "label": "资源文件",
+            "type": "file",
+            "required": true,
+            "description": "上传有权公开的 MP4 / WebM 视频文件。",
+            "options": {
+              "extensions": [
+                "mp4",
+                "webm"
+              ]
+            }
+          },
+          {
+            "name": "downloadName",
+            "label": "下载文件名（可选）",
+            "type": "string",
+            "description": "不必填写扩展名。留空时保留原文件名；旧的 file 文件使用资源名称。"
+          },
+          {
+            "name": "cover",
+            "label": "封面 / 视频海报（可选）",
+            "type": "image",
+            "options": {
+              "extensions": [
+                "jpg",
+                "jpeg",
+                "png",
+                "webp",
+                "gif"
+              ]
+            }
+          },
+          {
+            "name": "author",
+            "label": "作者 / 创作者（可选）",
+            "type": "string"
+          },
+          {
+            "name": "subtitles",
+            "label": "视频字幕（可选）",
+            "type": "file",
+            "description": "视频如有声音，可上传 WebVTT 字幕文件。",
+            "options": {
+              "extensions": [
+                "vtt"
+              ]
+            }
+          },
+          {
+            "name": "tags",
+            "label": "标签（可选）",
+            "type": "string",
+            "list": true
+          },
+          {
+            "name": "date",
+            "label": "收录日期",
+            "type": "date",
+            "required": true,
+            "options": {
+              "format": "yyyy-MM-dd"
+            }
+          },
+          {
+            "name": "order",
+            "label": "卡片排序（可选）",
+            "type": "number",
+            "description": "数字越小越靠前。"
+          }
+        ]
+      }
+    ]
+  },
+  "about": {
+    "name": "about",
+    "label": "关于我",
+    "type": "group",
+    "items": [
+      {
+        "name": "about-introduction",
+        "label": "自我介绍",
+        "type": "file",
+        "path": "_data/about/introduction.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "displayName",
+            "label": "一级标题中的称呼",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "label": "个人标签",
+            "type": "string",
+            "list": true
+          },
+          {
+            "name": "motto",
+            "label": "想成为怎样的人",
+            "type": "text"
+          },
+          {
+            "name": "bio",
+            "label": "自我介绍正文 · 每项一段",
+            "type": "text",
+            "list": true,
+            "description": "每一项是一段文字。"
+          }
+        ]
+      },
+      {
+        "name": "about-values",
+        "label": "价值观关键词",
+        "type": "file",
+        "path": "_data/about/values.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "valuesTitle",
+            "label": "二级标题",
+            "type": "string",
+            "description": "修改这里会同步修改主页上的对应标题。"
+          },
+          {
+            "name": "values",
+            "label": "价值观关键词",
+            "type": "string",
+            "list": true
+          }
+        ]
+      },
+      {
+        "name": "about-strengths",
+        "label": "我的优长",
+        "type": "file",
+        "path": "_data/about/strengths.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "strengthsTitle",
+            "label": "二级标题",
+            "type": "string",
+            "description": "修改这里会同步修改主页上的对应标题。"
+          },
+          {
+            "name": "strengths",
+            "label": "我的优长",
+            "type": "text",
+            "list": true
+          }
+        ]
+      },
+      {
+        "name": "about-challenges",
+        "label": "还在改进的地方",
+        "type": "file",
+        "path": "_data/about/challenges.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "challengesTitle",
+            "label": "二级标题",
+            "type": "string",
+            "description": "修改这里会同步修改主页上的对应标题。"
+          },
+          {
+            "name": "challenges",
+            "label": "还在改进的地方",
+            "type": "string",
+            "list": true
+          }
+        ]
+      },
+      {
+        "name": "about-personality",
+        "label": "我眼中的自己",
+        "type": "file",
+        "path": "_data/about/personality.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "personalityTitle",
+            "label": "二级标题",
+            "type": "string",
+            "description": "修改这里会同步修改主页上的对应标题。"
+          },
+          {
+            "name": "personality",
+            "label": "我眼中的自己",
+            "type": "string",
+            "list": true
+          }
+        ]
+      },
+      {
+        "name": "about-bigfive",
+        "label": "我的大五人格",
+        "type": "file",
+        "path": "_data/about/bigfive.json",
+        "format": "json",
+        "fields": [
+          {
+            "name": "bigFiveTitle",
+            "label": "二级标题",
+            "type": "string",
+            "description": "修改这里会同步修改主页上的对应标题。"
+          },
+          {
+            "name": "showBigFive",
+            "label": "显示大五人格测试卡片",
+            "type": "boolean"
+          },
+          {
+            "name": "bigFiveEmbed",
+            "label": "大五人格嵌入地址",
+            "type": "string",
+            "description": "填写 iframe 中的 src 地址。保存后会在个人主页公开展示这份结果。",
+            "pattern": {
+              "regex": "^https://bigfivepersonality\\.me/[a-zA-Z-]+/embed/[a-zA-Z0-9_-]+/?$",
+              "message": "请填写 bigfivepersonality.me 提供的嵌入地址，不要粘贴整段 iframe 代码。"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "support": {
+    "name": "support",
+    "label": "赞赏支持",
+    "type": "file",
+    "path": "_data/home/support.json",
+    "format": "json",
+    "fields": [
+      {
+        "name": "title",
+        "label": "二级标题 · 赞赏区",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "label": "赞赏说明",
+        "type": "text"
+      }
+    ]
+  }
+}

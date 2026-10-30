@@ -4,6 +4,8 @@ layout: null
 [
 {%- assign comma = "" -%}
 {%- for group in site.data.cards -%}
+ {%- assign tab = site.data.navigation[group[0]] -%}
+ {%- if tab and tab.hidden != true -%}
   {%- for record in group[1] -%}
     {{- comma -}}{"category":{{ group[0] | jsonify }}
     {%- for field in record[1] -%}
@@ -11,5 +13,6 @@ layout: null
     {%- endfor -%}}
     {%- assign comma = "," -%}
   {%- endfor -%}
+{%- endif -%}
 {%- endfor -%}
 ]

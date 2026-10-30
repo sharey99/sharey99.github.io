@@ -2,6 +2,7 @@
 layout: null
 ---
 [
+{%- if site.data.navigation.resources and site.data.navigation.resources.hidden != true -%}
 {%- assign comma = "" -%}
 {%- for group in site.data.resources -%}
   {%- for record in group[1] -%}
@@ -12,4 +13,5 @@ layout: null
     {%- assign comma = "," -%}
   {%- endfor -%}
 {%- endfor -%}
+{%- endif -%}
 ]

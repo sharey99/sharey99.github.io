@@ -23,6 +23,66 @@
   },
   "content": [
     {
+      "name": "navigation",
+      "label": "顶部分类管理 · 改名 / 新增 / 删除",
+      "type": "collection",
+      "path": "_data/navigation",
+      "format": "json",
+      "filename": {
+        "template": "category-{year}{month}{day}-{hour}{minute}{second}.json",
+        "field": false
+      },
+      "operations": {
+        "create": true,
+        "rename": false,
+        "delete": true
+      },
+      "subfolders": false,
+      "view": {
+        "primary": "title",
+        "fields": [
+          "title",
+          "order",
+          "hidden"
+        ],
+        "sort": [
+          "order",
+          "title"
+        ],
+        "search": [
+          "title"
+        ],
+        "default": {
+          "sort": "order",
+          "order": "asc"
+        }
+      },
+      "fields": [
+        {
+          "name": "title",
+          "label": "分类标题",
+          "type": "string",
+          "required": true,
+          "options": {
+            "maxlength": 40
+          },
+          "description": "这里的文字就是网站顶部选项卡和后台对应栏目的名称。"
+        },
+        {
+          "name": "order",
+          "label": "显示顺序",
+          "type": "number",
+          "description": "数字越小越靠前。"
+        },
+        {
+          "name": "hidden",
+          "label": "暂时隐藏此分类",
+          "type": "boolean",
+          "description": "勾选后从网站暂时隐藏；默认显示。删除分类也不会删除原有卡片文件。"
+        }
+      ]
+    },
+    {
       "name": "home",
       "label": "主页 · 全部收藏",
       "type": "group",
@@ -1589,3 +1649,4 @@
     }
   ]
 }
+
