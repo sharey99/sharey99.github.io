@@ -330,6 +330,78 @@
           }
         }
       ]
+    },
+    {
+      "name": "about",
+      "label": "自我介绍",
+      "type": "file",
+      "path": "profile.json",
+      "format": "json",
+      "fields": [
+        {
+          "name": "displayName",
+          "label": "介绍中的称呼",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "labels",
+          "label": "个人标签",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "motto",
+          "label": "想成为怎样的人",
+          "type": "text"
+        },
+        {
+          "name": "bio",
+          "label": "自我介绍正文",
+          "type": "text",
+          "list": true,
+          "description": "每一项是一段文字。"
+        },
+        {
+          "name": "values",
+          "label": "价值观关键词",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "strengths",
+          "label": "我的优长",
+          "type": "text",
+          "list": true
+        },
+        {
+          "name": "challenges",
+          "label": "还在改进的地方",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "personality",
+          "label": "我眼中的自己",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "showBigFive",
+          "label": "显示大五人格测试卡片",
+          "type": "boolean"
+        },
+        {
+          "name": "bigFiveEmbed",
+          "label": "大五人格嵌入地址",
+          "type": "string",
+          "description": "填写 iframe 中的 src 地址。保存后会在个人主页公开展示这份结果。",
+          "pattern": {
+            "regex": "^https://bigfivepersonality\\.me/[a-zA-Z-]+/embed/[a-zA-Z0-9_-]+/?$",
+            "message": "请填写 bigfivepersonality.me 提供的嵌入地址，不要粘贴整段 iframe 代码。"
+          }
+        }
+      ]
     }
   ]
 }

@@ -188,3 +188,12 @@ sharey99.github.io/
 - [GitHub Pages 使用限制](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
 
 GitHub Pages 发布站点上限为 1 GB，每月带宽有 100 GB 软限制，不适合大文件分发。后台免费与第三方服务规则可能更新，以官方实际说明为准。查阅日期：2026-10-30。
+
+
+## 自我介绍与赞赏区
+
+在 [Pages CMS](https://app.pagescms.org/) 打开本仓库，选择 **自我介绍**，可以修改称呼、个人标签、正文段落、价值观、优长、还在改进的地方，以及性格关键词。正文每一项是一段。保存后等待 GitHub Pages 部署完成。
+
+大五人格填写 **iframe 的 src 地址**，不要粘贴整段代码；也可以关闭“显示大五人格测试卡片”。结果由第三方网站嵌入，页面加载卡片时会连接该服务，适用其隐私规则。它是一次自测记录，不是固定的个人标签。嵌入失败时可点击“单独打开”。[官方嵌入说明](https://bigfivepersonality.me/zh/for-bloggers)。
+
+个人介绍保存在 `profile.json`，页面由 `assets/profile.js` 读取。赞赏区位于主页内容最下方，以小尺寸二维码展示，点击可放大；原始二维码保持不变，不包含自动扣款或付款验证功能。
