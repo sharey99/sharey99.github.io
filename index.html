@@ -204,6 +204,7 @@ button.querySelector('.filter-count').textContent=matching.filter(i=>category.id
 }
 }
 function render(){
+for(const section of document.querySelectorAll('#about,#support,body > footer'))section.hidden=activeCategory!=='all';
 updateFilters();
 const filtered=items.filter(i=>(activeCategory==='all'||i.category===activeCategory)&&matchesQuery(i)&&(activeCategory!=='resources'||activeResourceType==='all'||i.resourceType===activeResourceType));
 if($('sort').value==='newest')filtered.sort((a,b)=>b.date.localeCompare(a.date));
@@ -381,6 +382,9 @@ $('search-form').hidden=false;$('collection-meta').hidden=false;$('random-button
 $('search-form').addEventListener('submit',e=>{e.preventDefault();revealCollection(true);});
 $('search').addEventListener('input',()=>{render();revealCollection();});
 $('clear-search').addEventListener('click',()=>{$('search').value='';render();revealCollection();$('search').focus();});
+for(const link of document.querySelectorAll('a[href="#about"],a[href="#support"]'))link.addEventListener('click',()=>{
+ activeCategory='all';activeResourceType='all';$('search').value='';render();
+});
 $('sort').addEventListener('change',render);$('reset').addEventListener('click',()=>{reset();$('search').focus();});
 
 $('random-button').addEventListener('click',()=>{
