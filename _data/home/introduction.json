@@ -12,7 +12,14 @@
       "legacyId": "tools",
       "title": "网站收藏",
       "order": 20,
-      "hidden": false
+      "hidden": false,
+      "children": [
+        {
+          "key": "9a00aa2e-b2ca-4789-87be-3350a240e334",
+          "title": "聚合导航",
+          "order": 1
+        }
+      ]
     },
     {
       "key": "eca4fbc8-f9f1-4de2-87b6-c43aa2825cf9",
