@@ -22,6 +22,11 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 @media(max-width:640px){.resource-cover{margin:-21px -21px 18px;height:190px}.resource-types{gap:7px}.resource-types button{padding:7px 14px}.resource-downloads a{padding:10px 13px}}
 
 .cover-book img{object-fit:contain;padding:10px}
+
+.book-card-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.book-card-actions a,.book-card-actions button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:7px 15px;font-size:12px;border-radius:8px}.book-download{background:var(--ink);color:#fff}.book-download:hover{background:var(--green)}.book-preview-button{border:1px solid #cdd8c1;background:#f1f5e8;color:var(--green)}.book-bottom{gap:12px;flex-wrap:wrap}.book-bottom .tags{margin-left:auto}
+#book-preview{width:min(1040px,calc(100% - 28px));height:90vh;max-height:90vh;overflow:hidden;display:none;flex-direction:column}#book-preview[open]{display:flex}#book-preview .dialog-head{padding:18px 25px;align-items:center}#book-preview .dialog-head h2{font-size:19px}.book-preview-head-actions{display:flex;align-items:center;gap:13px}.book-preview-head-actions a{font-size:12px;background:#eaf0df;border-radius:8px;padding:7px 13px}.book-preview-tools{display:flex;gap:12px;align-items:center;padding:12px 25px;border-bottom:1px solid var(--line);flex-wrap:wrap}.book-preview-tools label{font-size:12px;display:flex;align-items:center;gap:7px}.book-preview-tools select{max-width:350px;min-width:0;border:1px solid var(--line);background:white;border-radius:7px;padding:7px;color:var(--ink)}.book-preview-tools button{border:1px solid var(--line);background:#edf2e3;border-radius:7px;padding:7px 12px;font-size:12px}.book-preview-tools button:disabled{opacity:.45;cursor:default}.book-preview-content{flex:1;min-height:0;overflow:auto;background:#fffef8;overscroll-behavior:contain}.epub-text{max-width:760px;margin:auto;padding:32px 40px 50px;line-height:2;color:#2e382f;overflow-wrap:anywhere;font-family:"Microsoft YaHei","PingFang SC",sans-serif}.epub-text p{margin:0 0 1em}.epub-text h1,.epub-text h2,.epub-text h3,.epub-text h4{margin:1.3em 0 .8em;line-height:1.6}.epub-text table{max-width:100%;border-collapse:collapse}.epub-text td,.epub-text th{border:1px solid var(--line);padding:7px}.epub-text pre{white-space:pre-wrap}.epub-image-note{font-size:.8em;color:var(--muted)}.book-preview-status{padding:9px 25px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.preview-error{padding:35px;line-height:1.9}.pdf-preview{border:0;width:100%;height:calc(100% - 58px);min-height:260px;display:block}.pdf-fallback{padding:12px 20px;font-size:12px;color:var(--muted)}.pdf-fallback a{color:var(--green);text-decoration:underline}
+@media(max-width:640px){.book-card-actions a,.book-card-actions button{min-height:42px;padding:8px 15px}#book-preview{height:94vh;max-height:94vh;width:calc(100% - 16px)}#book-preview .dialog-head{padding:14px 16px}#book-preview .dialog-head h2{font-size:16px}.book-preview-head-actions{gap:8px}.book-preview-tools{gap:8px;padding:10px 16px}.book-preview-tools select{max-width:190px}.epub-text{padding:22px 22px 40px}.book-preview-status{padding:8px 16px}}
+
 </style>
 </head>
 <body>
@@ -88,6 +93,8 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <p class="small">更多维护方式与授权注意事项见 <a href="./README.md">README.md</a>。分享经验不构成对任何人的结果承诺。</p>
 </div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="book-preview" aria-labelledby="book-preview-title"><div class="dialog-head"><div><p class="section-label">BOOK PREVIEW</p><h2 id="book-preview-title"></h2></div><div class="book-preview-head-actions"><a id="book-preview-download" href="#" download>下载 ↓</a><form method="dialog"><button class="close-dialog" aria-label="关闭书籍预览" autofocus>×</button></form></div></div><div class="book-preview-tools" id="book-preview-tools" hidden><label>章节 <select id="book-chapters" aria-label="选择章节"></select></label><button type="button" id="book-prev">上一章</button><button type="button" id="book-next">下一章</button><label>字号 <select id="book-font" aria-label="阅读字号"><option value="16">小</option><option value="18" selected>中</option><option value="21">大</option><option value="24">特大</option></select></label></div><div id="book-preview-content" class="book-preview-content"></div><p id="book-preview-status" class="book-preview-status" role="status" aria-live="polite"></p></dialog>
+<script src="./assets/book-preview.js"></script>
 <!-- 内容由同目录 content.json 提供，使用 Pages CMS 在线维护。 -->
 <script>
 'use strict';
@@ -132,7 +139,7 @@ const el=make('a','card-action',label);el.href=url;el.target='_blank';el.rel='no
 function linkFor(item,className,label){
 const url=item.category==='resources'||hasBody(item)?null:destination(item),el=make(url?'a':'button',className,label);
 if(url){el.href=url;el.target='_blank';el.rel='noopener noreferrer';el.setAttribute('aria-label',(label===item.title?'':label+'：')+item.title+'（新标签页）');}
-else{el.type='button';el.addEventListener('click',()=>item.category==='resources'?openResource(item):openArticle(item));}
+else{el.type='button';el.addEventListener('click',()=>item.category==='resources'?(item.resourceType==='book'?window.openBookPreview(item,resourceDownloadName(item)):openResource(item)):openArticle(item));}
 return el;
 }
 function searchableText(item){
@@ -228,7 +235,13 @@ cover.append(make('span','resource-type-label',RESOURCE_TYPES[item.resourceType]
 const heading=make('h3');heading.append(linkFor(item,'title-link',item.title));
 const bottom=make('div','card-bottom'),tags=make('span','tags');
 for(const tag of item.tags)tags.append(make('span','','# '+tag));
-bottom.append(tags,linkFor(item,'card-action',{book:'查看书籍 ↗',image:'查看图片 ↗',video:'播放视频 ▷'}[item.resourceType]));
+if(item.resourceType==='book'){
+bottom.classList.add('book-bottom');
+const actions=make('div','book-card-actions');
+const download=externalLink(item.file,'下载 ↓');download.className='book-download';download.download=resourceDownloadName(item);download.setAttribute('aria-label','下载书籍：'+item.title);
+const preview=make('button','book-preview-button','预览 ↗');preview.type='button';preview.setAttribute('aria-label','预览书籍：'+item.title);preview.addEventListener('click',()=>window.openBookPreview(item,resourceDownloadName(item)));
+actions.append(download,preview);bottom.append(actions,tags);
+}else bottom.append(tags,linkFor(item,'card-action',{image:'查看图片 ↗',video:'播放视频 ▷'}[item.resourceType]));
 card.append(cover,heading);
 if(item.author)card.append(make('p','resource-author',item.author));
 card.append(make('p','card-description',item.description),bottom);
