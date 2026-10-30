@@ -1,0 +1,14 @@
+{
+  "title": "Photopea",
+  "description": "浏览器里的图像编辑器。临时裁图、处理图层或制作一张配图时，可以来这里看看。",
+  "tags": [
+    "图像编辑",
+    "设计"
+  ],
+  "url": "https://www.photopea.com/",
+  "icon": "image",
+  "tone": "blue",
+  "date": "2026-10-30",
+  "kind": "官方入口",
+  "order": 40
+}

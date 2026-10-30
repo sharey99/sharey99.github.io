@@ -53,6 +53,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 @media(max-width:900px){.header-inner{flex-wrap:wrap;gap:10px 20px;padding-top:12px;padding-bottom:10px;min-height:0}.site-header .search{width:100%;order:3}.topnav{font-size:12px;gap:20px}.header-filters{padding-bottom:7px}.site-header .filters{gap:5px}.brand strong{font-size:22px}.brand small{font-size:8px}}
 @media(max-width:640px){.header-inner{padding-top:10px;padding-bottom:8px;gap:8px 16px}.brand strong{font-size:20px}.brand-mark{width:28px;height:28px}.brand small{font-size:7px}.topnav{gap:13px;font-size:11px}.site-header .search{border-radius:8px}.site-header .search input{height:34px;font-size:12px}.header-filters{padding-bottom:6px}.site-header .filter{font-size:11px;padding:6px 9px}.site-header .filter-count{font-size:9px}.site-header .filters{padding-bottom:3px}.collection{padding-top:26px}}
 
+#home-description,#support-description{white-space:pre-line}
 </style>
 </head>
 <body>
@@ -73,9 +74,9 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <main class="wrap">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
-<div class="eyebrow">A SMALL CORNER OF THE INTERNET</div>
+<div class="eyebrow" id="home-eyebrow">A SMALL CORNER OF THE INTERNET</div>
 <h1 id="hero-title">把好用的收藏，<br>把<span>有趣的分享。</span></h1>
-<p>这里装着一些值得打开的网站、值得翻翻的资源，<br>还有游戏与生活的攻略，和慢慢长出来的想法。</p>
+<p id="home-description">这里装着一些值得打开的网站、值得翻翻的资源，<br>还有游戏与生活的攻略，和慢慢长出来的想法。</p>
 <div class="hero-actions"><a class="primary" href="#collection">打开收藏夹 <span aria-hidden="true">↓</span></a><button class="text-button" id="random-button" type="button" hidden><span aria-hidden="true">⚄</span> 随便逛逛 <span aria-hidden="true">↗</span></button></div>
 </div>
 <div class="hero-art" aria-hidden="true">
@@ -87,7 +88,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 </section>
 <div class="intro-bar"><span class="intro-label"><span class="status-dot" aria-hidden="true"></span>一个持续生长的个人收藏夹</span><div class="intro-stats"><span><strong id="total-count">—</strong> 个条目</span><span><strong>6</strong> 个角落</span><span>始于 <strong>2026</strong></span></div></div>
 <section class="collection" id="collection" aria-labelledby="collection-title">
-<div class="collection-top"><div><p class="section-label">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
+<div class="collection-top"><div><p class="section-label" id="collection-eyebrow">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
 </div>
 <noscript><div class="noscript">这个收藏夹需要 JavaScript 来显示分类与文章。请启用后刷新。你也可以先访问 <a href="https://excalidraw.com/">Excalidraw</a>、<a href="https://www.photopea.com/">Photopea</a>、<a href="https://neal.fun/">Neal.fun</a>、<a href="https://ocw.mit.edu/">MIT 公开课</a>，或阅读 <a href="./README.md">本站说明</a>。</div></noscript>
 
@@ -121,7 +122,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <div class="profile-site-note"><span>这个小站，也是我爱琢磨、爱分享的一部分。</span><button class="text-button" data-open-policy type="button">小站收录原则 ↗</button></div>
 </section>
 <section class="support-section" id="support" aria-labelledby="support-title">
-<div class="support-copy"><h2 id="support-title">赞赏支持</h2><p>如果这里的分享对你有帮助，欢迎自愿赞赏。<br>心意随意，感谢支持。点击二维码可放大。</p></div>
+<div class="support-copy"><h2 id="support-title">赞赏支持</h2><p id="support-description">如果这里的分享对你有帮助，欢迎自愿赞赏。<br>心意随意，感谢支持。点击二维码可放大。</p></div>
 <div class="support-codes">
 <figure class="payment-card"><button class="payment-code" type="button" data-payment="wechat" aria-label="放大微信赞赏二维码"><div class="qr-viewport" style="--qr-width:223.601399%;--qr-left:-61.888112%;--qr-top:-76.398601%"><img src="./assets/payments/wechat.jpg" width="1279" height="1742" loading="lazy" decoding="async" alt="微信赞赏二维码"></div></button><figcaption><span class="payment-dot" aria-hidden="true"></span>微信赞赏</figcaption></figure>
 <figure class="payment-card"><button class="payment-code" type="button" data-payment="alipay" aria-label="放大支付宝赞赏二维码"><div class="qr-viewport" style="--qr-width:157.5%;--qr-left:-28.75%;--qr-top:-86.625%"><img src="./assets/payments/alipay.jpg" width="1260" height="1890" loading="lazy" decoding="async" alt="支付宝赞赏二维码"></div></button><figcaption><span class="payment-dot alipay" aria-hidden="true"></span>支付宝赞赏</figcaption></figure>
@@ -350,10 +351,22 @@ async function loadItems(){
 if(location.protocol==='file:')throw new Error('请通过 HTTP 预览，或上传 GitHub Pages 后访问。');
 const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
 try{
+const sourceGroups={'content.json':['tools','fun','games','life','notes'],'resources.json':['book','image','video']};
 const sources=await Promise.allSettled(['content.json','resources.json'].map(async file=>{
 const response=await fetch('./'+file,{cache:'no-store',signal:controller.signal});
 if(!response.ok)throw new Error(file+' 加载失败');
-const data=await response.json();if(!Array.isArray(data))throw new Error(file+' 格式不正确');return data;
+const data=await response.json();
+if(Array.isArray(data))return data.sort((a,b)=>(Number.isFinite(a?.order)?a.order:1e9)-(Number.isFinite(b?.order)?b.order:1e9));
+if(!data||typeof data!=='object')throw new Error(file+' 格式不正确');
+const validGroups=sourceGroups[file],entries=[];
+for(const [group,records] of Object.entries(data)){
+ if(!validGroups.includes(group)||!records||typeof records!=='object'||Array.isArray(records))continue;
+ for(const [key,entry] of Object.entries(records)){
+  if(!entry||typeof entry!=='object'||Array.isArray(entry))throw new Error(file+' 中有无效卡片');
+  entries.push({...entry,[file==='content.json'?'category':'resourceType']:group,_key:key});
+ }
+}
+return entries.sort((a,b)=>(Number.isFinite(a.order)?a.order:1e9)-(Number.isFinite(b.order)?b.order:1e9)||a._key.localeCompare(b._key));
 }));
 const result=[],issues=[];
 sources.forEach((source,sourceIndex)=>{
@@ -406,5 +419,6 @@ console.error('收藏数据加载失败：',error);
 });
 </script>
 <script src="./assets/profile.js"></script>
+<script src="./assets/homepage.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "title": "Steam 社区 · 游戏指南",
+  "description": "前往游戏社区寻找指南与讨论。阅读攻略时留意游戏版本、平台差异和剧透提醒。",
+  "tags": [
+    "社区指南",
+    "游戏"
+  ],
+  "url": "https://steamcommunity.com/",
+  "icon": "game",
+  "tone": "purple",
+  "date": "2026-10-30",
+  "kind": "平台入口",
+  "order": 70
+}

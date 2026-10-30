@@ -1,0 +1,14 @@
+{
+  "title": "MDN Web Docs",
+  "description": "做自己的网页时，可以从这里查 HTML、CSS 与 JavaScript 的文档和学习资料。",
+  "tags": [
+    "网页制作",
+    "文档"
+  ],
+  "url": "https://developer.mozilla.org/zh-CN/",
+  "icon": "code",
+  "tone": "blue",
+  "date": "2026-10-30",
+  "kind": "官方文档",
+  "order": 80
+}

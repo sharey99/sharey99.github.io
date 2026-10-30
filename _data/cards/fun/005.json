@@ -1,0 +1,14 @@
+{
+  "title": "Radio Garden",
+  "description": "转动地球，探索不同地方的广播。在声音里，感受远处此刻的日常。",
+  "tags": [
+    "广播",
+    "声音旅行"
+  ],
+  "url": "https://radio.garden/",
+  "icon": "radio",
+  "tone": "green",
+  "date": "2026-10-30",
+  "kind": "官方入口",
+  "order": 50
+}

@@ -1,11 +1,15 @@
+---
+layout: null
+---
 [
-  {
-    "title": "书籍",
-    "resourceType": "book",
-    "description": "当我谈跑步时，我在谈些什么 - [日]村上春树",
-    "file": "/files/file.epub",
-    "cover": "/files/file.jpg",
-    "date": "2026-10-30",
-    "downloadName": "当我谈跑步时，我在谈些什么 - [日]村上春树"
-  }
+{%- assign comma = "" -%}
+{%- for group in site.data.resources -%}
+  {%- for record in group[1] -%}
+    {{- comma -}}{"resourceType":{{ group[0] | jsonify }}
+    {%- for field in record[1] -%}
+      {%- unless field[0] == "resourceType" -%},{{ field[0] | jsonify }}:{{ field[1] | jsonify }}{%- endunless -%}
+    {%- endfor -%}}
+    {%- assign comma = "," -%}
+  {%- endfor -%}
+{%- endfor -%}
 ]

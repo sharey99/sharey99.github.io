@@ -1,0 +1,14 @@
+{
+  "title": "Excalidraw",
+  "description": "把脑中的想法画出来。适合草图、流程图，以及那些一时说不清的关系。",
+  "tags": [
+    "白板",
+    "画图"
+  ],
+  "url": "https://excalidraw.com/",
+  "icon": "pen",
+  "tone": "green",
+  "date": "2026-10-30",
+  "kind": "官方入口",
+  "order": 10
+}

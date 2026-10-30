@@ -1,0 +1,14 @@
+{
+  "title": "MIT OpenCourseWare",
+  "description": "MIT 公开课程入口。寻找课程视频、讲义与学习材料，从一个感兴趣的主题开始。",
+  "tags": [
+    "公开课",
+    "视频 / 讲义"
+  ],
+  "url": "https://ocw.mit.edu/",
+  "icon": "play",
+  "tone": "purple",
+  "date": "2026-10-30",
+  "kind": "官方入口",
+  "order": 30
+}
