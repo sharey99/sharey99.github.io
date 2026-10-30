@@ -46,6 +46,13 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 @media(max-width:800px){.profile-top{grid-template-columns:1fr;gap:22px}.personality-panel{max-width:352px}.bigfive-viewport{height:464px;--bigfive-scale:.8}.profile-detail-row{grid-template-columns:100px minmax(0,1fr)}}
 @media(max-width:540px){.profile-section{padding-top:20px}.profile-heading h2{font-size:23px}.profile-copy blockquote{font-size:18px;margin:15px 0 12px}.profile-detail-row{grid-template-columns:1fr;gap:7px;padding:10px 0}.profile-detail-row h3{margin:0}.profile-bio p{font-size:12px}.profile-site-note{margin-top:15px}.personality-caption{font-size:10px}#bigfive-frame{height:580px}}
 
+
+/* Keep discovery controls together while the content scrolls. */
+:root{--header-height:120px}html{scroll-padding-top:calc(var(--header-height) + 16px)}.site-header{position:sticky;top:0;z-index:40;background:#f7f8f2f5;backdrop-filter:blur(12px);box-shadow:0 3px 16px #24382d07}.header-inner{min-height:74px;gap:26px}.brand{flex-shrink:0}.brand strong{font-size:23px}.brand small{font-size:9px}.brand-mark{width:34px;height:34px}.topnav{margin-left:auto;gap:22px;font-size:12px;white-space:nowrap}.site-header .search{width:270px;flex-shrink:0;margin:0;background:#fffefb}.site-header .search input{height:37px;font-size:12px}.header-filters{padding-bottom:10px}.site-header .filters{flex-wrap:nowrap;overflow-x:auto;gap:8px;padding:0 2px 3px;scrollbar-width:thin;scrollbar-color:#c2ceba transparent}.site-header .filter{font-size:12px;padding:6px 12px;flex-shrink:0}.site-header .filter:focus-visible{outline-offset:-3px}.collection{scroll-margin-top:0}.collection-top{margin-bottom:16px}.profile-section,.support-section,#hero-title{scroll-margin-top:0}
+@media(max-width:1100px){.header-inner{gap:18px}.topnav{gap:16px}.site-header .search{width:230px}}
+@media(max-width:900px){.header-inner{flex-wrap:wrap;gap:10px 20px;padding-top:12px;padding-bottom:10px;min-height:0}.site-header .search{width:100%;order:3}.topnav{font-size:12px;gap:20px}.header-filters{padding-bottom:7px}.site-header .filters{gap:5px}.brand strong{font-size:22px}.brand small{font-size:8px}}
+@media(max-width:640px){.header-inner{padding-top:10px;padding-bottom:8px;gap:8px 16px}.brand strong{font-size:20px}.brand-mark{width:28px;height:28px}.brand small{font-size:7px}.topnav{gap:13px;font-size:11px}.site-header .search{border-radius:8px}.site-header .search input{height:34px;font-size:12px}.header-filters{padding-bottom:6px}.site-header .filter{font-size:11px;padding:6px 9px}.site-header .filter-count{font-size:9px}.site-header .filters{padding-bottom:3px}.collection{padding-top:26px}}
+
 </style>
 </head>
 <body>
@@ -60,8 +67,11 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <a class="desktop-nav" href="#collection" id="notes-nav">随笔笔记</a>
 <a href="#about">关于我</a>
 <a class="desktop-nav" href="#support">赞赏支持</a>
-<a class="github-link" href="https://github.com/sharey99/sharey99.github.io" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-</nav></div></header>
+
+</nav><form class="search" role="search" id="search-form" hidden>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+<input id="search" type="search" placeholder="搜索网站、资源、笔记…" aria-label="搜索标题、简介、标签和文章正文" autocomplete="off">
+<button class="clear-search" id="clear-search" type="button" aria-label="清空搜索" hidden>×</button></form></div><div class="wrap header-filters"><div class="filters" id="filters" role="group" aria-label="按内容分类筛选"></div></div></header>
 <main class="wrap">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
@@ -80,12 +90,9 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <div class="intro-bar"><span class="intro-label"><span class="status-dot" aria-hidden="true"></span>一个持续生长的个人收藏夹</span><div class="intro-stats"><span><strong id="total-count">—</strong> 个条目</span><span><strong>6</strong> 个角落</span><span>始于 <strong>2026</strong></span></div></div>
 <section class="collection" id="collection" aria-labelledby="collection-title">
 <div class="collection-top"><div><p class="section-label">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
-<form class="search" role="search" id="search-form" hidden>
-<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-<input id="search" type="search" placeholder="搜索网站、资源、笔记…" aria-label="搜索标题、简介、标签和文章正文" autocomplete="off">
-<button class="clear-search" id="clear-search" type="button" aria-label="清空搜索" hidden>×</button></form></div>
+</div>
 <noscript><div class="noscript">这个收藏夹需要 JavaScript 来显示分类与文章。请启用后刷新。你也可以先访问 <a href="https://excalidraw.com/">Excalidraw</a>、<a href="https://www.photopea.com/">Photopea</a>、<a href="https://neal.fun/">Neal.fun</a>、<a href="https://ocw.mit.edu/">MIT 公开课</a>，或阅读 <a href="./README.md">本站说明</a>。</div></noscript>
-<div class="filters" id="filters" role="group" aria-label="按内容分类筛选"></div>
+
 <div id="resource-types" class="resource-types" role="group" aria-label="按资源类型筛选" hidden><button type="button" data-resource-type="all" aria-pressed="true">全部资源</button><button type="button" data-resource-type="book" aria-pressed="false">书籍</button><button type="button" data-resource-type="image" aria-pressed="false">图片</button><button type="button" data-resource-type="video" aria-pressed="false">视频</button></div>
 <p class="shelf-intro" id="shelf-intro" hidden>读一本书，看一张图，留一段影像。</p>
 <div class="collection-meta" id="collection-meta" hidden><p id="result-status" role="status" aria-live="polite" aria-atomic="true"></p><label>排列方式 <select id="sort" aria-label="排列方式"><option value="curated">默认顺序</option><option value="newest">最近收录</option><option value="title">按标题排列</option></select></label></div>
@@ -228,7 +235,14 @@ $('clear-search').hidden=!$('search').value;
 const category=CATEGORIES.find(c=>c.id===activeCategory).label;
 $('result-status').textContent=category+' · '+filtered.length+' 个条目'+($('search').value.trim()?' · 搜索结果':' · 慢慢看，总有新的发现');
 }
-function selectCategory(id){activeCategory=id;activeResourceType='all';render();}
+const stickyHeader=document.querySelector('.site-header');
+const syncHeaderHeight=()=>document.documentElement.style.setProperty('--header-height',stickyHeader.getBoundingClientRect().height+'px');
+new ResizeObserver(syncHeaderHeight).observe(stickyHeader);syncHeaderHeight();
+function revealCollection(smooth=false){
+ const top=$('collection').getBoundingClientRect().top+window.scrollY-stickyHeader.getBoundingClientRect().height-16;
+ window.scrollTo({top:Math.max(0,top),behavior:smooth&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
+}
+function selectCategory(id){activeCategory=id;activeResourceType='all';render();revealCollection(true);}
 function openArticle(item){
 $('reader-title').textContent=item.title;
 $('reader-meta').textContent=CATEGORIES.find(c=>c.id===item.category).label+' / '+item.date;
@@ -366,9 +380,9 @@ button.addEventListener('click',()=>selectCategory(category.id));$('filters').ap
 }
 $('total-count').textContent=items.length;$('year').textContent=new Date().getFullYear();
 $('search-form').hidden=false;$('collection-meta').hidden=false;$('random-button').hidden=items.length===0;
-$('search-form').addEventListener('submit',e=>e.preventDefault());
-$('search').addEventListener('input',render);
-$('clear-search').addEventListener('click',()=>{$('search').value='';render();$('search').focus();});
+$('search-form').addEventListener('submit',e=>{e.preventDefault();revealCollection(true);});
+$('search').addEventListener('input',()=>{render();revealCollection();});
+$('clear-search').addEventListener('click',()=>{$('search').value='';render();revealCollection();$('search').focus();});
 $('sort').addEventListener('change',render);$('reset').addEventListener('click',()=>{reset();$('search').focus();});
 $('notes-nav').addEventListener('click',()=>{$('search').value='';selectCategory('notes');});
 $('random-button').addEventListener('click',()=>{
