@@ -57,6 +57,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 
 .subfilters{display:flex;align-items:center;gap:7px;overflow-x:auto;flex-wrap:nowrap;padding:9px 2px 3px;margin-top:4px;border-top:1px solid var(--line);scrollbar-width:thin}.subfilter-label{font-size:10px;color:var(--muted);white-space:nowrap;margin-right:3px}.subfilter{flex-shrink:0;font-size:11px;padding:4px 10px;border:1px solid #d9e2ce;border-radius:20px;background:#eef2e7;color:var(--muted);white-space:nowrap}.subfilter[aria-pressed="true"]{background:var(--lime);border-color:#9ebd77;color:var(--ink)}.subfilter:focus-visible{outline-offset:-2px}.subcategory-tag{color:var(--green);background:#eff5e5;border-radius:4px;padding:1px 5px}@media(max-width:640px){.subfilters{gap:6px;padding-top:7px}.subfilter{font-size:10px;padding:4px 9px}}
 
+.category-description{font-size:12px;color:var(--muted);line-height:1.9;margin:0 0 16px;white-space:pre-line}
 </style>
 </head>
 <body>
@@ -91,7 +92,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 </section>
 <div class="intro-bar"><span class="intro-label"><span class="status-dot" aria-hidden="true"></span>一个持续生长的个人收藏夹</span><div class="intro-stats"><span><strong id="total-count">—</strong> 个条目</span><span><strong id="category-count">6</strong> 个角落</span><span>始于 <strong>2026</strong></span></div></div>
 <section class="collection" id="collection" aria-labelledby="collection-title">
-<div class="collection-top"><div><p class="section-label" id="collection-eyebrow">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
+<p class="category-description" id="category-description" hidden></p><div class="collection-top"><div><p class="section-label" id="collection-eyebrow">THE COLLECTION</p><h2 id="collection-title">来，翻翻我的收藏</h2></div>
 </div>
 <noscript><div class="noscript">这个收藏夹需要 JavaScript 来显示分类与文章。请启用后刷新。你也可以先访问 <a href="https://excalidraw.com/">Excalidraw</a>、<a href="https://www.photopea.com/">Photopea</a>、<a href="https://neal.fun/">Neal.fun</a>、<a href="https://ocw.mit.edu/">MIT 公开课</a>，或阅读 <a href="./README.md">本站说明</a>。</div></noscript>
 
@@ -146,7 +147,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <dialog id="book-preview" aria-labelledby="book-preview-title"><div class="dialog-head"><div><p class="section-label">BOOK PREVIEW</p><h2 id="book-preview-title"></h2></div><div class="book-preview-head-actions"><a id="book-preview-download" href="#" download>下载 ↓</a><form method="dialog"><button class="close-dialog" aria-label="关闭书籍预览" autofocus>×</button></form></div></div><div class="book-preview-tools" id="book-preview-tools" hidden><label>章节 <select id="book-chapters" aria-label="选择章节"></select></label><button type="button" id="book-prev">上一章</button><button type="button" id="book-next">下一章</button><label>字号 <select id="book-font" aria-label="阅读字号"><option value="16">小</option><option value="18" selected>中</option><option value="21">大</option><option value="24">特大</option></select></label></div><div id="book-preview-content" class="book-preview-content"></div><p id="book-preview-status" class="book-preview-status" role="status" aria-live="polite"></p></dialog>
 <script src="./assets/book-preview.js"></script>
 <!-- 内容由同目录 content.json 提供，使用 Pages CMS 在线维护。 -->
-<script src="./assets/navigation.js?v=subcategories-1"></script>
+<script src="./assets/navigation.js?v=fixed-websites-1"></script>
 <script>
 'use strict';
 // 分类 id 保持不变；分类名称可以按喜好修改。
@@ -210,6 +211,7 @@ function renderSubfilters(){
  }
  const matching=items.filter(matchesQuery).filter(i=>i.category===activeCategory&&(activeCategory!=='resources'||activeResourceType==='all'||i.resourceType===activeResourceType));
  for(const button of row.querySelectorAll('button')){
+  button.hidden=button.dataset.subcategory==='none'&&activeSubcategory!=='none'&&!matching.some(i=>!i.subcategory);
   button.setAttribute('aria-pressed',String(button.dataset.subcategory===activeSubcategory));
   button.querySelector('.filter-count').textContent=matching.filter(i=>window.SiteNavigation.matchesSubcategory(i,button.dataset.subcategory)).length;
  }
@@ -262,6 +264,8 @@ $('clear-search').hidden=!$('search').value;
 const parentLabel=CATEGORIES.find(c=>c.id===activeCategory)?.label||'全部收藏';
 const childLabel=activeSubcategory==='none'?'未分类':CATEGORIES.find(c=>c.id===activeCategory)?.children?.find(c=>c.id===activeSubcategory)?.label;
 const category=parentLabel+(childLabel?' / '+childLabel:'');
+const selectedParent=CATEGORIES.find(c=>c.id===activeCategory),selectedChild=selectedParent?.children?.find(c=>c.id===activeSubcategory);
+$('category-description').textContent=selectedChild?.description||selectedParent?.description||'';$('category-description').hidden=!$('category-description').textContent;
 $('result-status').textContent=category+' · '+filtered.length+' 个条目'+($('search').value.trim()?' · 搜索结果':' · 慢慢看，总有新的发现');
 }
 const stickyHeader=document.querySelector('.site-header');

@@ -12,24 +12,7 @@
       "legacyId": "tools",
       "title": "网站收藏",
       "order": 20,
-      "hidden": false,
-      "children": [
-        {
-          "key": "9a00aa2e-b2ca-4789-87be-3350a240e334",
-          "title": "聚合导航",
-          "order": 1
-        },
-        {
-          "key": "87ff92ab-7f1a-46e6-833f-aa30bab1f30f",
-          "title": "资源网站",
-          "order": 2
-        },
-        {
-          "key": "2ad38163-5545-4f52-91af-24872c84e74c",
-          "title": "工具网站",
-          "order": 3
-        }
-      ]
+      "hidden": false
     },
     {
       "key": "eca4fbc8-f9f1-4de2-87b6-c43aa2825cf9",
@@ -65,5 +48,27 @@
   "eyebrow": "A SMALL CORNER OF THE INTERNET",
   "description": "这里装着一些值得打开的网站、值得翻翻的资源，\n还有游戏与生活的攻略，和慢慢长出来的想法。",
   "collectionTitle": "来，翻翻我的收藏",
-  "collectionEyebrow": "THE COLLECTION"
+  "collectionEyebrow": "THE COLLECTION",
+  "websiteSections": {
+    "navigation": {
+      "title": "聚合导航",
+      "description": ""
+    },
+    "resources": {
+      "title": "资源网站",
+      "description": ""
+    },
+    "tools": {
+      "title": "工具网站",
+      "description": ""
+    },
+    "learning": {
+      "title": "学习网站",
+      "description": ""
+    },
+    "ai": {
+      "title": "ai相关",
+      "description": ""
+    }
+  }
 }

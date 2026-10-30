@@ -36,7 +36,7 @@
           "fields": [
             {
               "name": "categories",
-              "label": "顶部分类 · 名称、增删与顺序",
+              "label": "栏目名称与显示顺序",
               "type": "object",
               "list": {
                 "collapsible": {
@@ -44,7 +44,7 @@
                   "summary": "{title}"
                 }
               },
-              "description": "展开一项改名；Add 添加分类，垃圾桶删除，显示顺序越小越靠前。保存后等待后台同步，再刷新左侧栏目。",
+              "description": "修改现有栏目的名称和顺序。网站收藏下面的五个子项固定，不在这里新增或删除。",
               "fields": [
                 {
                   "name": "key",
@@ -71,6 +71,11 @@
                   }
                 },
                 {
+                  "name": "description",
+                  "label": "栏目介绍（可选）",
+                  "type": "text"
+                },
+                {
                   "name": "order",
                   "label": "显示顺序",
                   "type": "number"
@@ -79,42 +84,102 @@
                   "name": "hidden",
                   "label": "暂时隐藏",
                   "type": "boolean"
-                },
+                }
+              ]
+            },
+            {
+              "name": "websiteSections",
+              "label": "网站收藏 · 子项名称与介绍",
+              "type": "object",
+              "description": "五个子项固定保留，可修改显示名称和介绍。卡片请从左侧对应子项进入编辑。",
+              "fields": [
                 {
-                  "name": "children",
-                  "label": "子分类（最后一级）",
+                  "name": "navigation",
+                  "label": "聚合导航",
                   "type": "object",
-                  "list": {
-                    "collapsible": {
-                      "collapsed": true,
-                      "summary": "{title}"
-                    }
-                  },
-                  "description": "在网站收藏、游戏攻略等内容栏目下添加；这里只能再分这一层。“全部收藏”是汇总入口，无需子分类。",
                   "fields": [
                     {
-                      "name": "key",
-                      "type": "uuid",
-                      "hidden": true,
-                      "required": true,
-                      "options": {
-                        "editable": false,
-                        "generate": false
-                      }
+                      "name": "title",
+                      "label": "显示名称",
+                      "type": "string",
+                      "required": true
                     },
+                    {
+                      "name": "description",
+                      "label": "介绍（可选）",
+                      "type": "text"
+                    }
+                  ]
+                },
+                {
+                  "name": "resources",
+                  "label": "资源网站",
+                  "type": "object",
+                  "fields": [
                     {
                       "name": "title",
-                      "label": "子分类名称",
+                      "label": "显示名称",
                       "type": "string",
-                      "required": true,
-                      "options": {
-                        "maxlength": 40
-                      }
+                      "required": true
                     },
                     {
-                      "name": "order",
-                      "label": "显示顺序",
-                      "type": "number"
+                      "name": "description",
+                      "label": "介绍（可选）",
+                      "type": "text"
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "label": "工具网站",
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "title",
+                      "label": "显示名称",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "label": "介绍（可选）",
+                      "type": "text"
+                    }
+                  ]
+                },
+                {
+                  "name": "learning",
+                  "label": "学习网站",
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "title",
+                      "label": "显示名称",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "label": "介绍（可选）",
+                      "type": "text"
+                    }
+                  ]
+                },
+                {
+                  "name": "ai",
+                  "label": "ai相关",
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "title",
+                      "label": "显示名称",
+                      "type": "string",
+                      "required": true
+                    },
+                    {
+                      "name": "description",
+                      "label": "介绍（可选）",
+                      "type": "text"
                     }
                   ]
                 }
@@ -163,223 +228,992 @@
         {
           "name": "tools",
           "label": "网站收藏",
-          "type": "collection",
-          "path": "_data/cards/tools",
-          "format": "json",
-          "filename": {
-            "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
-            "field": false
-          },
-          "subfolders": false,
-          "exclude": [
-            ".gitkeep"
-          ],
-          "view": {
-            "primary": "title",
-            "fields": [
-              "title",
-              "description",
-              "date"
-            ],
-            "sort": [
-              "order",
-              "date",
-              "title"
-            ],
-            "search": [
-              "title",
-              "description",
-              "tags"
-            ],
-            "default": {
-              "sort": "order",
-              "order": "asc"
-            }
-          },
-          "fields": [
+          "type": "group",
+          "items": [
             {
-              "name": "title",
-              "label": "一级标题 · 卡片名称",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "subcategory",
-              "label": "所属子分类（最后一级）",
-              "type": "select",
-              "description": "可留在父栏目，或选择下面的子分类。",
-              "options": {
-                "values": [
-                  {
-                    "name": "none",
-                    "label": "未分类"
-                  },
-                  {
-                    "name": "9a00aa2e-b2ca-4789-87be-3350a240e334",
-                    "label": "聚合导航"
-                  },
-                  {
-                    "name": "87ff92ab-7f1a-46e6-833f-aa30bab1f30f",
-                    "label": "资源网站"
-                  },
-                  {
-                    "name": "2ad38163-5545-4f52-91af-24872c84e74c",
-                    "label": "工具网站"
-                  }
-                ]
-              }
-            },
-            {
-              "name": "description",
-              "label": "一句话简介",
-              "type": "text",
-              "required": true
-            },
-            {
-              "name": "url",
-              "label": "外部网址（可选）",
-              "type": "string",
-              "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
-              "pattern": {
-                "regex": "^(https://[^\\s]+)?$",
-                "message": "请填 https:// 开头的网址；没有外链则留空。"
-              }
-            },
-            {
-              "name": "attachment",
-              "label": "附件（可选）",
-              "type": "file",
-              "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
-            },
-            {
-              "name": "body",
-              "label": "文章正文 · 段落",
-              "type": "object",
-              "list": {
-                "collapsible": {
-                  "collapsed": true,
-                  "summary": "{heading}（第 {index} 段）"
+              "name": "tools-navigation",
+              "label": "聚合导航",
+              "type": "collection",
+              "path": "_data/cards/tools/navigation",
+              "format": "json",
+              "filename": {
+                "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+                "field": false
+              },
+              "subfolders": false,
+              "exclude": [
+                ".gitkeep"
+              ],
+              "view": {
+                "primary": "title",
+                "fields": [
+                  "title",
+                  "description",
+                  "date"
+                ],
+                "sort": [
+                  "order",
+                  "date",
+                  "title"
+                ],
+                "search": [
+                  "title",
+                  "description",
+                  "tags"
+                ],
+                "default": {
+                  "sort": "order",
+                  "order": "asc"
                 }
               },
-              "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
               "fields": [
                 {
-                  "name": "heading",
-                  "label": "二级标题 · 正文小标题（可选）",
-                  "type": "string"
+                  "name": "title",
+                  "label": "一级标题 · 卡片名称",
+                  "type": "string",
+                  "required": true
                 },
                 {
-                  "name": "text",
-                  "label": "这一段的正文",
+                  "name": "description",
+                  "label": "一句话简介",
                   "type": "text",
                   "required": true
+                },
+                {
+                  "name": "url",
+                  "label": "外部网址（可选）",
+                  "type": "string",
+                  "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+                  "pattern": {
+                    "regex": "^(https://[^\\s]+)?$",
+                    "message": "请填 https:// 开头的网址；没有外链则留空。"
+                  }
+                },
+                {
+                  "name": "attachment",
+                  "label": "附件（可选）",
+                  "type": "file",
+                  "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+                },
+                {
+                  "name": "body",
+                  "label": "文章正文 · 段落",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{heading}（第 {index} 段）"
+                    }
+                  },
+                  "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+                  "fields": [
+                    {
+                      "name": "heading",
+                      "label": "二级标题 · 正文小标题（可选）",
+                      "type": "string"
+                    },
+                    {
+                      "name": "text",
+                      "label": "这一段的正文",
+                      "type": "text",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "name": "tags",
+                  "label": "标签（可选）",
+                  "type": "string",
+                  "list": true
+                },
+                {
+                  "name": "date",
+                  "label": "收录日期",
+                  "type": "date",
+                  "required": true,
+                  "options": {
+                    "format": "yyyy-MM-dd"
+                  }
+                },
+                {
+                  "name": "kind",
+                  "label": "角标文字（可选）",
+                  "type": "string",
+                  "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+                },
+                {
+                  "name": "icon",
+                  "label": "图标（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "pen",
+                        "label": "画笔"
+                      },
+                      {
+                        "name": "spark",
+                        "label": "星光"
+                      },
+                      {
+                        "name": "play",
+                        "label": "视频"
+                      },
+                      {
+                        "name": "image",
+                        "label": "图像"
+                      },
+                      {
+                        "name": "radio",
+                        "label": "电台"
+                      },
+                      {
+                        "name": "book",
+                        "label": "书籍"
+                      },
+                      {
+                        "name": "game",
+                        "label": "游戏"
+                      },
+                      {
+                        "name": "code",
+                        "label": "代码"
+                      },
+                      {
+                        "name": "leaf",
+                        "label": "生活"
+                      },
+                      {
+                        "name": "note",
+                        "label": "笔记"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "tone",
+                  "label": "图标颜色（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "green",
+                        "label": "绿色"
+                      },
+                      {
+                        "name": "blue",
+                        "label": "蓝色"
+                      },
+                      {
+                        "name": "peach",
+                        "label": "浅橙"
+                      },
+                      {
+                        "name": "purple",
+                        "label": "紫色"
+                      },
+                      {
+                        "name": "yellow",
+                        "label": "黄色"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "order",
+                  "label": "卡片排序（可选）",
+                  "type": "number",
+                  "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
                 }
               ]
             },
             {
-              "name": "tags",
-              "label": "标签（可选）",
-              "type": "string",
-              "list": true
-            },
-            {
-              "name": "date",
-              "label": "收录日期",
-              "type": "date",
-              "required": true,
-              "options": {
-                "format": "yyyy-MM-dd"
-              }
-            },
-            {
-              "name": "kind",
-              "label": "角标文字（可选）",
-              "type": "string",
-              "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
-            },
-            {
-              "name": "icon",
-              "label": "图标（可选）",
-              "type": "select",
-              "options": {
-                "values": [
-                  {
-                    "name": "pen",
-                    "label": "画笔"
-                  },
-                  {
-                    "name": "spark",
-                    "label": "星光"
-                  },
-                  {
-                    "name": "play",
-                    "label": "视频"
-                  },
-                  {
-                    "name": "image",
-                    "label": "图像"
-                  },
-                  {
-                    "name": "radio",
-                    "label": "电台"
-                  },
-                  {
-                    "name": "book",
-                    "label": "书籍"
-                  },
-                  {
-                    "name": "game",
-                    "label": "游戏"
-                  },
-                  {
-                    "name": "code",
-                    "label": "代码"
-                  },
-                  {
-                    "name": "leaf",
-                    "label": "生活"
-                  },
-                  {
-                    "name": "note",
-                    "label": "笔记"
+              "name": "tools-resources",
+              "label": "资源网站",
+              "type": "collection",
+              "path": "_data/cards/tools/resources",
+              "format": "json",
+              "filename": {
+                "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+                "field": false
+              },
+              "subfolders": false,
+              "exclude": [
+                ".gitkeep"
+              ],
+              "view": {
+                "primary": "title",
+                "fields": [
+                  "title",
+                  "description",
+                  "date"
+                ],
+                "sort": [
+                  "order",
+                  "date",
+                  "title"
+                ],
+                "search": [
+                  "title",
+                  "description",
+                  "tags"
+                ],
+                "default": {
+                  "sort": "order",
+                  "order": "asc"
+                }
+              },
+              "fields": [
+                {
+                  "name": "title",
+                  "label": "一级标题 · 卡片名称",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "label": "一句话简介",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "name": "url",
+                  "label": "外部网址（可选）",
+                  "type": "string",
+                  "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+                  "pattern": {
+                    "regex": "^(https://[^\\s]+)?$",
+                    "message": "请填 https:// 开头的网址；没有外链则留空。"
                   }
-                ]
-              }
-            },
-            {
-              "name": "tone",
-              "label": "图标颜色（可选）",
-              "type": "select",
-              "options": {
-                "values": [
-                  {
-                    "name": "green",
-                    "label": "绿色"
+                },
+                {
+                  "name": "attachment",
+                  "label": "附件（可选）",
+                  "type": "file",
+                  "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+                },
+                {
+                  "name": "body",
+                  "label": "文章正文 · 段落",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{heading}（第 {index} 段）"
+                    }
                   },
-                  {
-                    "name": "blue",
-                    "label": "蓝色"
-                  },
-                  {
-                    "name": "peach",
-                    "label": "浅橙"
-                  },
-                  {
-                    "name": "purple",
-                    "label": "紫色"
-                  },
-                  {
-                    "name": "yellow",
-                    "label": "黄色"
+                  "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+                  "fields": [
+                    {
+                      "name": "heading",
+                      "label": "二级标题 · 正文小标题（可选）",
+                      "type": "string"
+                    },
+                    {
+                      "name": "text",
+                      "label": "这一段的正文",
+                      "type": "text",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "name": "tags",
+                  "label": "标签（可选）",
+                  "type": "string",
+                  "list": true
+                },
+                {
+                  "name": "date",
+                  "label": "收录日期",
+                  "type": "date",
+                  "required": true,
+                  "options": {
+                    "format": "yyyy-MM-dd"
                   }
-                ]
-              }
+                },
+                {
+                  "name": "kind",
+                  "label": "角标文字（可选）",
+                  "type": "string",
+                  "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+                },
+                {
+                  "name": "icon",
+                  "label": "图标（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "pen",
+                        "label": "画笔"
+                      },
+                      {
+                        "name": "spark",
+                        "label": "星光"
+                      },
+                      {
+                        "name": "play",
+                        "label": "视频"
+                      },
+                      {
+                        "name": "image",
+                        "label": "图像"
+                      },
+                      {
+                        "name": "radio",
+                        "label": "电台"
+                      },
+                      {
+                        "name": "book",
+                        "label": "书籍"
+                      },
+                      {
+                        "name": "game",
+                        "label": "游戏"
+                      },
+                      {
+                        "name": "code",
+                        "label": "代码"
+                      },
+                      {
+                        "name": "leaf",
+                        "label": "生活"
+                      },
+                      {
+                        "name": "note",
+                        "label": "笔记"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "tone",
+                  "label": "图标颜色（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "green",
+                        "label": "绿色"
+                      },
+                      {
+                        "name": "blue",
+                        "label": "蓝色"
+                      },
+                      {
+                        "name": "peach",
+                        "label": "浅橙"
+                      },
+                      {
+                        "name": "purple",
+                        "label": "紫色"
+                      },
+                      {
+                        "name": "yellow",
+                        "label": "黄色"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "order",
+                  "label": "卡片排序（可选）",
+                  "type": "number",
+                  "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+                }
+              ]
             },
             {
-              "name": "order",
-              "label": "卡片排序（可选）",
-              "type": "number",
-              "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+              "name": "tools-tools",
+              "label": "工具网站",
+              "type": "collection",
+              "path": "_data/cards/tools/tools",
+              "format": "json",
+              "filename": {
+                "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+                "field": false
+              },
+              "subfolders": false,
+              "exclude": [
+                ".gitkeep"
+              ],
+              "view": {
+                "primary": "title",
+                "fields": [
+                  "title",
+                  "description",
+                  "date"
+                ],
+                "sort": [
+                  "order",
+                  "date",
+                  "title"
+                ],
+                "search": [
+                  "title",
+                  "description",
+                  "tags"
+                ],
+                "default": {
+                  "sort": "order",
+                  "order": "asc"
+                }
+              },
+              "fields": [
+                {
+                  "name": "title",
+                  "label": "一级标题 · 卡片名称",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "label": "一句话简介",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "name": "url",
+                  "label": "外部网址（可选）",
+                  "type": "string",
+                  "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+                  "pattern": {
+                    "regex": "^(https://[^\\s]+)?$",
+                    "message": "请填 https:// 开头的网址；没有外链则留空。"
+                  }
+                },
+                {
+                  "name": "attachment",
+                  "label": "附件（可选）",
+                  "type": "file",
+                  "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+                },
+                {
+                  "name": "body",
+                  "label": "文章正文 · 段落",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{heading}（第 {index} 段）"
+                    }
+                  },
+                  "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+                  "fields": [
+                    {
+                      "name": "heading",
+                      "label": "二级标题 · 正文小标题（可选）",
+                      "type": "string"
+                    },
+                    {
+                      "name": "text",
+                      "label": "这一段的正文",
+                      "type": "text",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "name": "tags",
+                  "label": "标签（可选）",
+                  "type": "string",
+                  "list": true
+                },
+                {
+                  "name": "date",
+                  "label": "收录日期",
+                  "type": "date",
+                  "required": true,
+                  "options": {
+                    "format": "yyyy-MM-dd"
+                  }
+                },
+                {
+                  "name": "kind",
+                  "label": "角标文字（可选）",
+                  "type": "string",
+                  "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+                },
+                {
+                  "name": "icon",
+                  "label": "图标（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "pen",
+                        "label": "画笔"
+                      },
+                      {
+                        "name": "spark",
+                        "label": "星光"
+                      },
+                      {
+                        "name": "play",
+                        "label": "视频"
+                      },
+                      {
+                        "name": "image",
+                        "label": "图像"
+                      },
+                      {
+                        "name": "radio",
+                        "label": "电台"
+                      },
+                      {
+                        "name": "book",
+                        "label": "书籍"
+                      },
+                      {
+                        "name": "game",
+                        "label": "游戏"
+                      },
+                      {
+                        "name": "code",
+                        "label": "代码"
+                      },
+                      {
+                        "name": "leaf",
+                        "label": "生活"
+                      },
+                      {
+                        "name": "note",
+                        "label": "笔记"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "tone",
+                  "label": "图标颜色（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "green",
+                        "label": "绿色"
+                      },
+                      {
+                        "name": "blue",
+                        "label": "蓝色"
+                      },
+                      {
+                        "name": "peach",
+                        "label": "浅橙"
+                      },
+                      {
+                        "name": "purple",
+                        "label": "紫色"
+                      },
+                      {
+                        "name": "yellow",
+                        "label": "黄色"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "order",
+                  "label": "卡片排序（可选）",
+                  "type": "number",
+                  "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+                }
+              ]
+            },
+            {
+              "name": "tools-learning",
+              "label": "学习网站",
+              "type": "collection",
+              "path": "_data/cards/tools/learning",
+              "format": "json",
+              "filename": {
+                "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+                "field": false
+              },
+              "subfolders": false,
+              "exclude": [
+                ".gitkeep"
+              ],
+              "view": {
+                "primary": "title",
+                "fields": [
+                  "title",
+                  "description",
+                  "date"
+                ],
+                "sort": [
+                  "order",
+                  "date",
+                  "title"
+                ],
+                "search": [
+                  "title",
+                  "description",
+                  "tags"
+                ],
+                "default": {
+                  "sort": "order",
+                  "order": "asc"
+                }
+              },
+              "fields": [
+                {
+                  "name": "title",
+                  "label": "一级标题 · 卡片名称",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "label": "一句话简介",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "name": "url",
+                  "label": "外部网址（可选）",
+                  "type": "string",
+                  "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+                  "pattern": {
+                    "regex": "^(https://[^\\s]+)?$",
+                    "message": "请填 https:// 开头的网址；没有外链则留空。"
+                  }
+                },
+                {
+                  "name": "attachment",
+                  "label": "附件（可选）",
+                  "type": "file",
+                  "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+                },
+                {
+                  "name": "body",
+                  "label": "文章正文 · 段落",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{heading}（第 {index} 段）"
+                    }
+                  },
+                  "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+                  "fields": [
+                    {
+                      "name": "heading",
+                      "label": "二级标题 · 正文小标题（可选）",
+                      "type": "string"
+                    },
+                    {
+                      "name": "text",
+                      "label": "这一段的正文",
+                      "type": "text",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "name": "tags",
+                  "label": "标签（可选）",
+                  "type": "string",
+                  "list": true
+                },
+                {
+                  "name": "date",
+                  "label": "收录日期",
+                  "type": "date",
+                  "required": true,
+                  "options": {
+                    "format": "yyyy-MM-dd"
+                  }
+                },
+                {
+                  "name": "kind",
+                  "label": "角标文字（可选）",
+                  "type": "string",
+                  "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+                },
+                {
+                  "name": "icon",
+                  "label": "图标（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "pen",
+                        "label": "画笔"
+                      },
+                      {
+                        "name": "spark",
+                        "label": "星光"
+                      },
+                      {
+                        "name": "play",
+                        "label": "视频"
+                      },
+                      {
+                        "name": "image",
+                        "label": "图像"
+                      },
+                      {
+                        "name": "radio",
+                        "label": "电台"
+                      },
+                      {
+                        "name": "book",
+                        "label": "书籍"
+                      },
+                      {
+                        "name": "game",
+                        "label": "游戏"
+                      },
+                      {
+                        "name": "code",
+                        "label": "代码"
+                      },
+                      {
+                        "name": "leaf",
+                        "label": "生活"
+                      },
+                      {
+                        "name": "note",
+                        "label": "笔记"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "tone",
+                  "label": "图标颜色（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "green",
+                        "label": "绿色"
+                      },
+                      {
+                        "name": "blue",
+                        "label": "蓝色"
+                      },
+                      {
+                        "name": "peach",
+                        "label": "浅橙"
+                      },
+                      {
+                        "name": "purple",
+                        "label": "紫色"
+                      },
+                      {
+                        "name": "yellow",
+                        "label": "黄色"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "order",
+                  "label": "卡片排序（可选）",
+                  "type": "number",
+                  "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+                }
+              ]
+            },
+            {
+              "name": "tools-ai",
+              "label": "ai相关",
+              "type": "collection",
+              "path": "_data/cards/tools/ai",
+              "format": "json",
+              "filename": {
+                "template": "{year}{month}{day}-{hour}{minute}{second}-{primary}.json",
+                "field": false
+              },
+              "subfolders": false,
+              "exclude": [
+                ".gitkeep"
+              ],
+              "view": {
+                "primary": "title",
+                "fields": [
+                  "title",
+                  "description",
+                  "date"
+                ],
+                "sort": [
+                  "order",
+                  "date",
+                  "title"
+                ],
+                "search": [
+                  "title",
+                  "description",
+                  "tags"
+                ],
+                "default": {
+                  "sort": "order",
+                  "order": "asc"
+                }
+              },
+              "fields": [
+                {
+                  "name": "title",
+                  "label": "一级标题 · 卡片名称",
+                  "type": "string",
+                  "required": true
+                },
+                {
+                  "name": "description",
+                  "label": "一句话简介",
+                  "type": "text",
+                  "required": true
+                },
+                {
+                  "name": "url",
+                  "label": "外部网址（可选）",
+                  "type": "string",
+                  "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+                  "pattern": {
+                    "regex": "^(https://[^\\s]+)?$",
+                    "message": "请填 https:// 开头的网址；没有外链则留空。"
+                  }
+                },
+                {
+                  "name": "attachment",
+                  "label": "附件（可选）",
+                  "type": "file",
+                  "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+                },
+                {
+                  "name": "body",
+                  "label": "文章正文 · 段落",
+                  "type": "object",
+                  "list": {
+                    "collapsible": {
+                      "collapsed": true,
+                      "summary": "{heading}（第 {index} 段）"
+                    }
+                  },
+                  "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+                  "fields": [
+                    {
+                      "name": "heading",
+                      "label": "二级标题 · 正文小标题（可选）",
+                      "type": "string"
+                    },
+                    {
+                      "name": "text",
+                      "label": "这一段的正文",
+                      "type": "text",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "name": "tags",
+                  "label": "标签（可选）",
+                  "type": "string",
+                  "list": true
+                },
+                {
+                  "name": "date",
+                  "label": "收录日期",
+                  "type": "date",
+                  "required": true,
+                  "options": {
+                    "format": "yyyy-MM-dd"
+                  }
+                },
+                {
+                  "name": "kind",
+                  "label": "角标文字（可选）",
+                  "type": "string",
+                  "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+                },
+                {
+                  "name": "icon",
+                  "label": "图标（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "pen",
+                        "label": "画笔"
+                      },
+                      {
+                        "name": "spark",
+                        "label": "星光"
+                      },
+                      {
+                        "name": "play",
+                        "label": "视频"
+                      },
+                      {
+                        "name": "image",
+                        "label": "图像"
+                      },
+                      {
+                        "name": "radio",
+                        "label": "电台"
+                      },
+                      {
+                        "name": "book",
+                        "label": "书籍"
+                      },
+                      {
+                        "name": "game",
+                        "label": "游戏"
+                      },
+                      {
+                        "name": "code",
+                        "label": "代码"
+                      },
+                      {
+                        "name": "leaf",
+                        "label": "生活"
+                      },
+                      {
+                        "name": "note",
+                        "label": "笔记"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "tone",
+                  "label": "图标颜色（可选）",
+                  "type": "select",
+                  "options": {
+                    "values": [
+                      {
+                        "name": "green",
+                        "label": "绿色"
+                      },
+                      {
+                        "name": "blue",
+                        "label": "蓝色"
+                      },
+                      {
+                        "name": "peach",
+                        "label": "浅橙"
+                      },
+                      {
+                        "name": "purple",
+                        "label": "紫色"
+                      },
+                      {
+                        "name": "yellow",
+                        "label": "黄色"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "order",
+                  "label": "卡片排序（可选）",
+                  "type": "number",
+                  "description": "数字越小越靠前；留空的新卡片排在已有卡片后面。"
+                }
+              ]
             }
           ]
         },

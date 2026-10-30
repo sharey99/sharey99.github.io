@@ -8,12 +8,19 @@ layout: null
  {%- assign tab = site.data.navigation[category_id] -%}
  {%- if tab and tab.hidden != true -%}
   {%- for record in group[1] -%}
-    {{- comma -}}{"category":{{ group[0] | jsonify }}
-    {%- for field in record[1] -%}
-      {%- unless field[0] == "category" -%},{{ field[0] | jsonify }}:{{ field[1] | jsonify }}{%- endunless -%}
-    {%- endfor -%}}
-    {%- assign comma = "," -%}
+   {%- assign node = record[1] -%}
+   {%- if node.title -%}
+    {%- assign card = node -%}{%- assign subcategory_id = card.subcategory | default: "" -%}
+    {{- comma -}}{"category":{{ category_id | jsonify }}{% if subcategory_id != "" %},"subcategory":{{ subcategory_id | jsonify }}{% endif %}{%- for field in card -%}{%- unless field[0] == "category" or field[0] == "subcategory" -%},{{ field[0] | jsonify }}:{{ field[1] | jsonify }}{%- endunless -%}{%- endfor -%}}{%- assign comma = "," -%}
+   {%- else -%}
+    {%- assign folder_name = record[0] -%}{%- assign subcategory_id = "" -%}
+    {%- for section in tab.children -%}{%- if section.folder == folder_name -%}{%- assign subcategory_id = section.id -%}{%- endif -%}{%- endfor -%}
+    {%- for nested in node -%}
+     {%- assign card = nested[1] -%}
+     {%- if card.title -%}{{- comma -}}{"category":{{ category_id | jsonify }}{% if subcategory_id != "" %},"subcategory":{{ subcategory_id | jsonify }}{% endif %}{%- for field in card -%}{%- unless field[0] == "category" or field[0] == "subcategory" -%},{{ field[0] | jsonify }}:{{ field[1] | jsonify }}{%- endunless -%}{%- endfor -%}}{%- assign comma = "," -%}{%- endif -%}
+    {%- endfor -%}
+   {%- endif -%}
   {%- endfor -%}
-{%- endif -%}
+ {%- endif -%}
 {%- endfor -%}
 ]

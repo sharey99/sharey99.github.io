@@ -10,5 +10,6 @@
   "tone": "blue",
   "date": "2026-10-30",
   "kind": "官方文档",
-  "order": 80
+  "order": 80,
+  "subcategory": "learning"
 }

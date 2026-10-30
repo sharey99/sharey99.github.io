@@ -10,5 +10,6 @@
   "tone": "purple",
   "date": "2026-10-30",
   "kind": "官方入口",
-  "order": 30
+  "order": 30,
+  "subcategory": "learning"
 }
