@@ -4,5 +4,56 @@
   "titleSecond": "把有趣的分享。",
   "description": "这里装着一些值得打开的网站、值得翻翻的资源，\n还有游戏与生活的攻略，和慢慢长出来的想法。",
   "collectionTitle": "来，翻翻我的收藏",
-  "collectionEyebrow": "THE COLLECTION"
+  "collectionEyebrow": "THE COLLECTION",
+  "categories": [
+    {
+      "legacyId": "all",
+      "key": "5f85469b-f78d-4786-a895-d46f7f6543fa",
+      "title": "全部收藏",
+      "order": 10,
+      "hidden": false
+    },
+    {
+      "legacyId": "tools",
+      "key": "29f4996c-1e67-4c6d-b1e0-843c8c76f17d",
+      "title": "好用网站",
+      "order": 20,
+      "hidden": false
+    },
+    {
+      "legacyId": "fun",
+      "key": "2625ec55-a6b3-4f05-a0cf-74f0cae9689e",
+      "title": "有趣网站",
+      "order": 30,
+      "hidden": false
+    },
+    {
+      "legacyId": "resources",
+      "key": "eca4fbc8-f9f1-4de2-87b6-c43aa2825cf9",
+      "title": "资源书架",
+      "order": 40,
+      "hidden": false
+    },
+    {
+      "legacyId": "games",
+      "key": "cf172537-3ab7-4216-9425-38cd63e5d892",
+      "title": "游戏攻略",
+      "order": 50,
+      "hidden": false
+    },
+    {
+      "legacyId": "life",
+      "key": "f1384230-b72a-46e1-bd54-837db787e736",
+      "title": "人生攻略",
+      "order": 60,
+      "hidden": false
+    },
+    {
+      "legacyId": "notes",
+      "key": "4e33bed8-0954-4a9d-8462-d12ee282da22",
+      "title": "随笔笔记",
+      "order": 70,
+      "hidden": false
+    }
+  ]
 }
