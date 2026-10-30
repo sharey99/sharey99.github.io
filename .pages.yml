@@ -1,0 +1,218 @@
+{
+  "media": {
+    "input": "files",
+    "output": "/files",
+    "rename": "safe",
+    "extensions": [
+      "pdf",
+      "epub",
+      "txt",
+      "md",
+      "docx",
+      "xlsx",
+      "pptx",
+      "png",
+      "jpg",
+      "jpeg",
+      "webp"
+    ]
+  },
+  "content": [
+    {
+      "name": "collection",
+      "label": "网站收藏与笔记",
+      "type": "file",
+      "path": "content.json",
+      "format": "json",
+      "list": true,
+      "fields": [
+        {
+          "name": "title",
+          "label": "标题",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "category",
+          "label": "分类",
+          "type": "select",
+          "required": true,
+          "options": {
+            "values": [
+              {
+                "name": "tools",
+                "label": "好用网站"
+              },
+              {
+                "name": "fun",
+                "label": "有趣网站"
+              },
+              {
+                "name": "resources",
+                "label": "资源书架"
+              },
+              {
+                "name": "games",
+                "label": "游戏攻略"
+              },
+              {
+                "name": "life",
+                "label": "人生攻略"
+              },
+              {
+                "name": "notes",
+                "label": "随笔笔记"
+              }
+            ]
+          }
+        },
+        {
+          "name": "description",
+          "label": "一句话简介",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "url",
+          "label": "外部网址（可选）",
+          "type": "string",
+          "description": "网站、课程或视频的 HTTPS 原始链接。写站内文章时可以不填。",
+          "pattern": {
+            "regex": "^(https://[^\\s]+)?$",
+            "message": "请填 https:// 开头的网址；没有外链则留空。"
+          }
+        },
+        {
+          "name": "attachment",
+          "label": "附件（可选）",
+          "type": "file",
+          "description": "选择或上传有权公开的小文件。上传后文件公开；大视频请使用外部平台链接。"
+        },
+        {
+          "name": "body",
+          "label": "文章正文（可选）",
+          "type": "object",
+          "list": {
+            "collapsible": {
+              "collapsed": true,
+              "summary": "{heading}（第 {index} 段）"
+            }
+          },
+          "description": "添加段落；小标题可不填，正文支持多行纯文本。有正文时展开阅读，外链和附件放在文章底部。",
+          "fields": [
+            {
+              "name": "heading",
+              "label": "小标题（可选）",
+              "type": "string"
+            },
+            {
+              "name": "text",
+              "label": "正文",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "name": "tags",
+          "label": "标签（可选）",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "date",
+          "label": "收录日期",
+          "type": "date",
+          "required": true,
+          "options": {
+            "format": "yyyy-MM-dd"
+          }
+        },
+        {
+          "name": "kind",
+          "label": "角标文字（可选）",
+          "type": "string",
+          "description": "例如：官方入口、个人笔记、原创攻略。留空显示“个人分享”。"
+        },
+        {
+          "name": "icon",
+          "label": "图标（可选）",
+          "type": "select",
+          "options": {
+            "values": [
+              {
+                "name": "pen",
+                "label": "画笔"
+              },
+              {
+                "name": "spark",
+                "label": "星光"
+              },
+              {
+                "name": "play",
+                "label": "视频"
+              },
+              {
+                "name": "image",
+                "label": "图像"
+              },
+              {
+                "name": "radio",
+                "label": "电台"
+              },
+              {
+                "name": "book",
+                "label": "书籍"
+              },
+              {
+                "name": "game",
+                "label": "游戏"
+              },
+              {
+                "name": "code",
+                "label": "代码"
+              },
+              {
+                "name": "leaf",
+                "label": "生活"
+              },
+              {
+                "name": "note",
+                "label": "笔记"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tone",
+          "label": "图标颜色（可选）",
+          "type": "select",
+          "options": {
+            "values": [
+              {
+                "name": "green",
+                "label": "绿色"
+              },
+              {
+                "name": "blue",
+                "label": "蓝色"
+              },
+              {
+                "name": "peach",
+                "label": "浅橙"
+              },
+              {
+                "name": "purple",
+                "label": "紫色"
+              },
+              {
+                "name": "yellow",
+                "label": "黄色"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
