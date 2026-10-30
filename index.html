@@ -63,8 +63,6 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2c2.6 11.9 5.1 14.4 18 18-12.9 3.6-15.4 6.1-18 18C16.4 25.1 13.9 22.6 2 20 13.9 16.4 16.4 13.9 20 2Z" fill="currentColor"/><circle cx="20" cy="20" r="4" fill="#d5ee9a"/></svg>
 <span><strong>Sharey99</strong><small>SHAREY99'S CORNER</small></span></a>
 <nav class="topnav" aria-label="主导航">
-<a href="#collection"><span class="nav-dot"></span>发现收藏</a>
-<a class="desktop-nav" href="#collection" id="notes-nav">随笔笔记</a>
 <a href="#about">关于我</a>
 <a class="desktop-nav" href="#support">赞赏支持</a>
 
@@ -384,7 +382,7 @@ $('search-form').addEventListener('submit',e=>{e.preventDefault();revealCollecti
 $('search').addEventListener('input',()=>{render();revealCollection();});
 $('clear-search').addEventListener('click',()=>{$('search').value='';render();revealCollection();$('search').focus();});
 $('sort').addEventListener('change',render);$('reset').addEventListener('click',()=>{reset();$('search').focus();});
-$('notes-nav').addEventListener('click',()=>{$('search').value='';selectCategory('notes');});
+
 $('random-button').addEventListener('click',()=>{
 reset();const item=items[Math.floor(Math.random()*items.length)];if(!item)return;
 const card=$('card-'+item.id);card.classList.add('picked');
