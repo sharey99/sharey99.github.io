@@ -28,7 +28,7 @@
     "kind": "作者网站"
   },
   {
-    "category": "resources",
+    "category": "tools",
     "title": "MIT OpenCourseWare",
     "description": "MIT 公开课程入口。寻找课程视频、讲义与学习材料，从一个感兴趣的主题开始。",
     "tags": [
@@ -70,7 +70,7 @@
     "kind": "官方入口"
   },
   {
-    "category": "resources",
+    "category": "tools",
     "title": "Project Gutenberg",
     "description": "以美国公版经典为主的电子书入口。阅读或再传播前，仍需核对所在地版权与版本授权。",
     "tags": [

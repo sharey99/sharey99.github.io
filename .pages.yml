@@ -14,7 +14,11 @@
       "png",
       "jpg",
       "jpeg",
-      "webp"
+      "webp",
+      "gif",
+      "mp4",
+      "webm",
+      "vtt"
     ]
   },
   "content": [
@@ -46,10 +50,6 @@
               {
                 "name": "fun",
                 "label": "有趣网站"
-              },
-              {
-                "name": "resources",
-                "label": "资源书架"
               },
               {
                 "name": "games",
@@ -210,6 +210,116 @@
                 "label": "黄色"
               }
             ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "resources",
+      "label": "资源书架 · 书籍 / 图片 / 视频",
+      "type": "file",
+      "path": "resources.json",
+      "format": "json",
+      "list": true,
+      "fields": [
+        {
+          "name": "title",
+          "label": "资源名称",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "resourceType",
+          "label": "资源类型",
+          "type": "select",
+          "required": true,
+          "options": {
+            "values": [
+              {
+                "name": "book",
+                "label": "书籍"
+              },
+              {
+                "name": "image",
+                "label": "图片"
+              },
+              {
+                "name": "video",
+                "label": "视频"
+              }
+            ]
+          }
+        },
+        {
+          "name": "description",
+          "label": "资源简介",
+          "type": "text",
+          "required": true,
+          "description": "介绍内容、适合谁；图片请写明画面，视频可补充内容摘要。"
+        },
+        {
+          "name": "file",
+          "label": "资源文件",
+          "type": "file",
+          "required": true,
+          "description": "书籍上传 PDF / EPUB；图片上传 JPG / PNG / WebP / GIF；视频上传 MP4 / WebM。请上传有权公开的文件。",
+          "options": {
+            "extensions": [
+              "pdf",
+              "epub",
+              "jpg",
+              "jpeg",
+              "png",
+              "webp",
+              "gif",
+              "mp4",
+              "webm"
+            ]
+          }
+        },
+        {
+          "name": "cover",
+          "label": "封面 / 视频海报（可选）",
+          "type": "image",
+          "options": {
+            "extensions": [
+              "jpg",
+              "jpeg",
+              "png",
+              "webp",
+              "gif"
+            ]
+          }
+        },
+        {
+          "name": "author",
+          "label": "作者 / 创作者（可选）",
+          "type": "string"
+        },
+        {
+          "name": "subtitles",
+          "label": "视频字幕（可选）",
+          "type": "file",
+          "description": "视频如有声音，可上传 WebVTT 字幕文件。",
+          "options": {
+            "extensions": [
+              "vtt"
+            ]
+          }
+        },
+        {
+          "name": "tags",
+          "label": "标签（可选）",
+          "type": "string",
+          "list": true
+        },
+        {
+          "name": "date",
+          "label": "收录日期",
+          "type": "date",
+          "required": true,
+          "options": {
+            "format": "yyyy-MM-dd"
           }
         }
       ]
