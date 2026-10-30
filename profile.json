@@ -10,6 +10,7 @@
     "能力范围内，会尽量给自己好一点的东西；但如果需要为此付出太多，可能就会放下。\n生活里，尽可能保持真诚，也喜欢把好的经验、好用的东西和网站分享给别人。",
     "终极理想：“安得广厦千万间，大庇天下寒士俱欢颜”……"
   ],
+  "valuesTitle": "价值观关键词",
   "values": [
     "真诚",
     "尊重",
@@ -22,6 +23,7 @@
     "无私",
     "顺应自然"
   ],
+  "strengthsTitle": "我的优长",
   "strengths": [
     "真诚、实在、谦虚",
     "肯学，爱琢磨",
@@ -29,6 +31,7 @@
     "爱分享好的经验与好用的东西",
     "愿意助人"
   ],
+  "challengesTitle": "还在改进的地方",
   "challenges": [
     "拖延",
     "犹豫",
@@ -37,6 +40,7 @@
     "追求完美",
     "理想主义"
   ],
+  "personalityTitle": "我眼中的自己",
   "personality": [
     "随和",
     "灵活",
@@ -50,11 +54,7 @@
     "优柔寡断",
     "理想主义"
   ],
+  "bigFiveTitle": "我的大五人格",
   "showBigFive": true,
-  "bigFiveEmbed": "https://bigfivepersonality.me/zh/embed/yhPrLRtV",
-  "valuesTitle": "我珍视的事",
-  "strengthsTitle": "我的优长",
-  "challengesTitle": "还在改进的地方",
-  "personalityTitle": "我眼中的自己",
-  "bigFiveTitle": "我的大五人格"
+  "bigFiveEmbed": "https://bigfivepersonality.me/zh/embed/yhPrLRtV"
 }
