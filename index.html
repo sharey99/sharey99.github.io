@@ -54,6 +54,9 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 @media(max-width:640px){.header-inner{padding-top:10px;padding-bottom:8px;gap:8px 16px}.brand strong{font-size:20px}.brand-mark{width:28px;height:28px}.brand small{font-size:7px}.topnav{gap:13px;font-size:11px}.site-header .search{border-radius:8px}.site-header .search input{height:34px;font-size:12px}.header-filters{padding-bottom:6px}.site-header .filter{font-size:11px;padding:6px 9px}.site-header .filter-count{font-size:9px}.site-header .filters{padding-bottom:3px}.collection{padding-top:26px}}
 
 #home-description,#support-description{white-space:pre-line}
+
+.subfilters{display:flex;align-items:center;gap:7px;overflow-x:auto;flex-wrap:nowrap;padding:9px 2px 3px;margin-top:4px;border-top:1px solid var(--line);scrollbar-width:thin}.subfilter-label{font-size:10px;color:var(--muted);white-space:nowrap;margin-right:3px}.subfilter{flex-shrink:0;font-size:11px;padding:4px 10px;border:1px solid #d9e2ce;border-radius:20px;background:#eef2e7;color:var(--muted);white-space:nowrap}.subfilter[aria-pressed="true"]{background:var(--lime);border-color:#9ebd77;color:var(--ink)}.subfilter:focus-visible{outline-offset:-2px}.subcategory-tag{color:var(--green);background:#eff5e5;border-radius:4px;padding:1px 5px}@media(max-width:640px){.subfilters{gap:6px;padding-top:7px}.subfilter{font-size:10px;padding:4px 9px}}
+
 </style>
 </head>
 <body>
@@ -70,7 +73,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 </nav><form class="search" role="search" id="search-form" hidden>
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
 <input id="search" type="search" placeholder="搜索网站、资源、笔记…" aria-label="搜索标题、简介、标签和文章正文" autocomplete="off">
-<button class="clear-search" id="clear-search" type="button" aria-label="清空搜索" hidden>×</button></form></div><div class="wrap header-filters"><div class="filters" id="filters" role="group" aria-label="按内容分类筛选"></div></div></header>
+<button class="clear-search" id="clear-search" type="button" aria-label="清空搜索" hidden>×</button></form></div><div class="wrap header-filters"><div class="filters" id="filters" role="group" aria-label="按内容分类筛选"></div><div class="subfilters" id="subfilters" role="group" aria-label="按子分类筛选" hidden></div></div></header>
 <main class="wrap">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy">
@@ -143,7 +146,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 <dialog id="book-preview" aria-labelledby="book-preview-title"><div class="dialog-head"><div><p class="section-label">BOOK PREVIEW</p><h2 id="book-preview-title"></h2></div><div class="book-preview-head-actions"><a id="book-preview-download" href="#" download>下载 ↓</a><form method="dialog"><button class="close-dialog" aria-label="关闭书籍预览" autofocus>×</button></form></div></div><div class="book-preview-tools" id="book-preview-tools" hidden><label>章节 <select id="book-chapters" aria-label="选择章节"></select></label><button type="button" id="book-prev">上一章</button><button type="button" id="book-next">下一章</button><label>字号 <select id="book-font" aria-label="阅读字号"><option value="16">小</option><option value="18" selected>中</option><option value="21">大</option><option value="24">特大</option></select></label></div><div id="book-preview-content" class="book-preview-content"></div><p id="book-preview-status" class="book-preview-status" role="status" aria-live="polite"></p></dialog>
 <script src="./assets/book-preview.js"></script>
 <!-- 内容由同目录 content.json 提供，使用 Pages CMS 在线维护。 -->
-<script src="./assets/navigation.js"></script>
+<script src="./assets/navigation.js?v=subcategories-1"></script>
 <script>
 'use strict';
 // 分类 id 保持不变；分类名称可以按喜好修改。
@@ -165,7 +168,7 @@ note:'<path d="M14 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9M14 3l7
 };
 const $=id=>document.getElementById(id);
 const make=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;};
-let items=[],activeCategory='all',activeResourceType='all',toastTimer;
+let items=[],activeCategory='all',activeResourceType='all',activeSubcategory='all',toastTimer;
 const RESOURCE_TYPES={book:'书籍',image:'图片',video:'视频'};
 function safeUrl(value){
 if(typeof value!=='string'||!value.trim())return null;
@@ -190,8 +193,29 @@ if(url){el.href=url;el.target='_blank';el.rel='noopener noreferrer';el.setAttrib
 else{el.type='button';el.addEventListener('click',()=>item.category==='resources'?(item.resourceType==='book'?window.openBookPreview(item,resourceDownloadName(item)):openResource(item)):openArticle(item));}
 return el;
 }
+function subcategoryLabel(item){return CATEGORIES.find(c=>c.id===item.category)?.children?.find(x=>x.id===item.subcategory)?.label||'';}
+function renderSubfilters(){
+ const row=$('subfilters'),category=CATEGORIES.find(c=>c.id===activeCategory),children=category?.children||[];
+ row.hidden=activeCategory==='all'||children.length===0;
+ if(row.hidden){activeSubcategory='all';return;}
+ if(!['all','none'].includes(activeSubcategory)&&!children.some(x=>x.id===activeSubcategory))activeSubcategory='all';
+ const signature=JSON.stringify([category.id,children]);
+ if(row.dataset.signature!==signature){
+  row.dataset.signature=signature;row.replaceChildren(make('span','subfilter-label','子分类'));
+  for(const choice of [{id:'all',label:'全部'},{id:'none',label:'未分类'},...children]){
+   const button=make('button','subfilter');button.type='button';button.dataset.subcategory=choice.id;
+   button.append(document.createTextNode(choice.label),make('span','filter-count'));
+   button.addEventListener('click',()=>{activeSubcategory=choice.id;render();revealCollection(true);});row.append(button);
+  }
+ }
+ const matching=items.filter(matchesQuery).filter(i=>i.category===activeCategory&&(activeCategory!=='resources'||activeResourceType==='all'||i.resourceType===activeResourceType));
+ for(const button of row.querySelectorAll('button')){
+  button.setAttribute('aria-pressed',String(button.dataset.subcategory===activeSubcategory));
+  button.querySelector('.filter-count').textContent=matching.filter(i=>window.SiteNavigation.matchesSubcategory(i,button.dataset.subcategory)).length;
+ }
+}
 function searchableText(item){
-return [item.title,item.description,item.kind,item.author,RESOURCE_TYPES[item.resourceType],CATEGORIES.find(c=>c.id===item.category)?.label,...item.tags,...(item.body||[]).flatMap(b=>[b.heading,b.text])].join(' ').toLocaleLowerCase();
+return [item.title,item.description,item.kind,item.author,RESOURCE_TYPES[item.resourceType],subcategoryLabel(item),CATEGORIES.find(c=>c.id===item.category)?.label,...item.tags,...(item.body||[]).flatMap(b=>[b.heading,b.text])].join(' ').toLocaleLowerCase();
 }
 function matchesQuery(item){
 const terms=$('search').value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean),text=searchableText(item);
@@ -207,8 +231,9 @@ button.querySelector('.filter-count').textContent=matching.filter(i=>category.id
 }
 function render(){
 for(const section of document.querySelectorAll('#about,#support,body > footer'))section.hidden=activeCategory!=='all';
+renderSubfilters();
 updateFilters();
-const filtered=items.filter(i=>(activeCategory==='all'||i.category===activeCategory)&&matchesQuery(i)&&(activeCategory!=='resources'||activeResourceType==='all'||i.resourceType===activeResourceType));
+const filtered=items.filter(i=>(activeCategory==='all'||i.category===activeCategory)&&matchesQuery(i)&&window.SiteNavigation.matchesSubcategory(i,activeSubcategory)&&(activeCategory!=='resources'||activeResourceType==='all'||i.resourceType===activeResourceType));
 if($('sort').value==='newest')filtered.sort((a,b)=>b.date.localeCompare(a.date));
 if($('sort').value==='title')filtered.sort((a,b)=>a.title.localeCompare(b.title,'zh-CN'));
 const fragment=document.createDocumentFragment();
@@ -222,6 +247,7 @@ icon.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stro
 top.append(icon,make('span','badge',item.kind));
 const heading=make('h3');heading.append(linkFor(item,'title-link',item.title));
 const bottom=make('div','card-bottom'),tags=make('span','tags');
+if(subcategoryLabel(item))tags.append(make('span','subcategory-tag',subcategoryLabel(item)));
 for(const tag of item.tags)tags.append(make('span','','# '+tag));
 bottom.append(tags,linkFor(item,'card-action',hasBody(item)?'展开阅读 ↗':(safeUrl(item.url)?'前往看看 ↗':'打开文件 ↗')));
 card.append(top,heading,make('p','card-description',item.description),bottom);fragment.append(card);
@@ -233,7 +259,9 @@ const emptyShelf=activeCategory==='resources'&&!items.some(i=>i.category==='reso
 $('empty').querySelector('h3').textContent=emptyShelf?'资源书架还空着':'这个角落暂时没有找到';
 $('empty').querySelector('p').textContent=emptyShelf?'书籍、图片与视频，会慢慢整理到这里。':'试试更短的关键词，或者换个分类逛逛。';
 $('clear-search').hidden=!$('search').value;
-const category=CATEGORIES.find(c=>c.id===activeCategory)?.label||'全部收藏';
+const parentLabel=CATEGORIES.find(c=>c.id===activeCategory)?.label||'全部收藏';
+const childLabel=activeSubcategory==='none'?'未分类':CATEGORIES.find(c=>c.id===activeCategory)?.children?.find(c=>c.id===activeSubcategory)?.label;
+const category=parentLabel+(childLabel?' / '+childLabel:'');
 $('result-status').textContent=category+' · '+filtered.length+' 个条目'+($('search').value.trim()?' · 搜索结果':' · 慢慢看，总有新的发现');
 }
 const stickyHeader=document.querySelector('.site-header');
@@ -243,7 +271,7 @@ function revealCollection(smooth=false){
  const top=$('collection').getBoundingClientRect().top+window.scrollY-stickyHeader.getBoundingClientRect().height-16;
  window.scrollTo({top:Math.max(0,top),behavior:smooth&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
 }
-function selectCategory(id){activeCategory=id;activeResourceType='all';render();revealCollection(true);}
+function selectCategory(id){activeCategory=id;activeResourceType='all';activeSubcategory='all';render();revealCollection(true);}
 function openArticle(item){
 $('reader-title').textContent=item.title;
 $('reader-meta').textContent=CATEGORIES.find(c=>c.id===item.category).label+' / '+item.date;
@@ -255,7 +283,7 @@ if(safeUrl(item.attachment)){const row=make('p');row.append(externalLink(safeUrl
 $('reader-body').replaceChildren(fragment);$('reader').showModal();$('reader').scrollTop=0;
 }
 function showToast(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').hidden=false;toastTimer=setTimeout(()=>{$('toast').hidden=true;},4500);}
-function reset(){activeCategory='all';activeResourceType='all';$('search').value='';$('sort').value='curated';render();}
+function reset(){activeCategory='all';activeResourceType='all';activeSubcategory='all';$('search').value='';$('sort').value='curated';render();}
 function resourceFile(value,kind){
 const url=safeUrl(value);if(!url)return null;
 let extension;try{extension=decodeURIComponent(new URL(url,location.href).pathname).split('.').pop().toLowerCase();}catch{return null;}
@@ -265,7 +293,7 @@ return types[kind]?.includes(extension)?url:null;
 function normalizeResource(raw,index){
 if(!raw||!Object.hasOwn(RESOURCE_TYPES,raw.resourceType)||typeof raw.title!=='string'||!raw.title.trim()||typeof raw.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(raw.date.slice(0,10)))throw new Error('资源名称、类型或日期不完整');
 const file=resourceFile(raw.file,raw.resourceType);if(!file)throw new Error('资源需要匹配类型的文件，不能填写网站页面');
-return {id:'resource-'+index,category:'resources',resourceType:raw.resourceType,title:raw.title.trim(),
+return {id:'resource-'+index,category:'resources',subcategory:window.SiteNavigation.resolveSubcategory(CATEGORIES,'resources',raw.subcategory),resourceType:raw.resourceType,title:raw.title.trim(),
 description:typeof raw.description==='string'?raw.description:'',file,
 cover:resourceFile(raw.cover,'image'),subtitles:resourceFile(raw.subtitles,'subtitles'),
 author:typeof raw.author==='string'?raw.author:'',downloadName:typeof raw.downloadName==='string'?raw.downloadName:'',date:raw.date.slice(0,10),
@@ -290,6 +318,7 @@ else{cover.append(make('span','resource-placeholder',item.resourceType==='book'?
 cover.append(make('span','resource-type-label',RESOURCE_TYPES[item.resourceType]));
 const heading=make('h3');heading.append(linkFor(item,'title-link',item.title));
 const bottom=make('div','card-bottom'),tags=make('span','tags');
+if(subcategoryLabel(item))tags.append(make('span','subcategory-tag',subcategoryLabel(item)));
 for(const tag of item.tags)tags.append(make('span','','# '+tag));
 if(item.resourceType==='book'){
 bottom.classList.add('book-bottom');
@@ -333,7 +362,7 @@ $('reader-body').replaceChildren(fragment);$('reader').showModal();$('reader').s
 function normalizeItem(raw,index){
 if(!raw||typeof raw!=='object')throw new Error('条目不是对象');
 const item={id:'entry-'+index,title:typeof raw.title==='string'?raw.title.trim():'',
-category:raw.category,description:typeof raw.description==='string'?raw.description:'',
+category:raw.category,subcategory:window.SiteNavigation.resolveSubcategory(CATEGORIES,raw.category,raw.subcategory),description:typeof raw.description==='string'?raw.description:'',
 tags:Array.isArray(raw.tags)?raw.tags.filter(x=>typeof x==='string'&&x.trim()):[],
 date:typeof raw.date==='string'?raw.date.slice(0,10):'',
 kind:typeof raw.kind==='string'&&raw.kind.trim()?raw.kind:'个人分享',
@@ -403,7 +432,7 @@ $('search-form').addEventListener('submit',e=>{e.preventDefault();revealCollecti
 $('search').addEventListener('input',()=>{render();revealCollection();});
 $('clear-search').addEventListener('click',()=>{$('search').value='';render();revealCollection();$('search').focus();});
 for(const link of document.querySelectorAll('a[href="#about"],a[href="#support"]'))link.addEventListener('click',()=>{
- activeCategory='all';activeResourceType='all';$('search').value='';render();
+ activeCategory='all';activeResourceType='all';activeSubcategory='all';$('search').value='';render();
 });
 $('sort').addEventListener('change',render);$('reset').addEventListener('click',()=>{reset();$('search').focus();});
 
