@@ -2,7 +2,7 @@
   "media": {
     "input": "files",
     "output": "/files",
-    "rename": "safe",
+    "rename": false,
     "extensions": [
       "pdf",
       "epub",
@@ -226,7 +226,8 @@
           "name": "title",
           "label": "资源名称",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "建议填写实际书名或作品名称。"
         },
         {
           "name": "resourceType",
@@ -276,6 +277,12 @@
               "webm"
             ]
           }
+        },
+        {
+          "name": "downloadName",
+          "label": "下载文件名（可选）",
+          "type": "string",
+          "description": "不必填写扩展名。留空时保留原文件名；旧的 file 文件使用资源名称。"
         },
         {
           "name": "cover",

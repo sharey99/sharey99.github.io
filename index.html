@@ -21,6 +21,7 @@ dialog{border:1px solid var(--line);border-radius:20px;color:var(--ink);padding:
 .resource-types{display:flex;gap:8px;flex-wrap:wrap;padding:0 0 18px}.resource-types button{background:#edf1e5;border:1px solid #d8e1ca;border-radius:30px;padding:6px 15px;font-size:12px}.resource-types button[aria-pressed="true"]{background:#d5ee9a;border-color:#93ad63;color:#24382d}.resource-cover{height:176px;flex-shrink:0;margin:-23px -23px 19px;border-radius:17px 17px 0 0;overflow:hidden;background:linear-gradient(130deg,#dfe8d1,#f2f4e6);position:relative;display:grid;place-items:center;color:#527544}.resource-cover img{width:100%;height:100%;object-fit:cover}.cover-image{background:#e9eef7}.cover-video{background:linear-gradient(130deg,#d5dfdd,#ecf0e7)}.resource-placeholder{font-size:45px;line-height:1;font-family:Georgia,serif}.resource-type-label{position:absolute;left:14px;bottom:12px;background:#fffdf2e8;padding:3px 10px;border-radius:20px;font-size:10px}.resource-author{font-size:11px;color:var(--muted);margin:-2px 0 9px}.media-image{display:block;max-width:100%;max-height:65vh;margin:0 auto 18px;object-fit:contain;border-radius:10px}.media-video{display:block;width:100%;max-height:60vh;border-radius:10px;background:#14251b;margin-bottom:16px}.resource-book-cover{max-width:180px;max-height:245px;object-fit:contain;margin:0 auto 20px;display:block;border-radius:7px}.resource-meta{font-size:12px;color:var(--muted);margin-bottom:16px}.resource-downloads{display:flex;flex-wrap:wrap;gap:12px;border-top:1px solid var(--line);margin-top:22px;padding-top:18px}.resource-downloads a{background:#edf2e2;padding:8px 14px;border-radius:8px;font-size:12px}.media-error{font-size:12px;background:#f5f0dd;padding:10px 14px;border-radius:8px}.shelf-intro{font-size:12px;color:var(--muted);margin:-2px 0 15px}
 @media(max-width:640px){.resource-cover{margin:-21px -21px 18px;height:190px}.resource-types{gap:7px}.resource-types button{padding:7px 14px}.resource-downloads a{padding:10px 13px}}
 
+.cover-book img{object-fit:contain;padding:10px}
 </style>
 </head>
 <body>
@@ -114,10 +115,14 @@ const RESOURCE_TYPES={book:'书籍',image:'图片',video:'视频'};
 function safeUrl(value){
 if(typeof value!=='string'||!value.trim())return null;
 const url=value.trim();
-// 外部链接只接受 HTTPS；允许 CMS 生成的 /files/ 附件路径。
 if(/^https:\/\//i.test(url)){try{const parsed=new URL(url);return parsed.protocol==='https:'&&!parsed.username&&!parsed.password?parsed.href:null;}catch{return null;}}
-if(/^(?:\.\/|\/)files\/[\w\u3400-\u9fff%./ ()-]+$/u.test(url)&&!url.includes('..')&&!/%(?:2e|2f|5c)/i.test(url))return url;
-return null;
+const prefix=url.startsWith('./files/')?'./files/':url.startsWith('/files/')?'/files/':null;
+if(!prefix||/[\u0000-\u001f\u007f\\]/.test(url))return null;
+try{
+const parts=url.slice(prefix.length).split('/').map(part=>{try{return decodeURIComponent(part);}catch{return part;}});
+if(!parts.length||parts.some(part=>!part||part==='.'||part==='..'||/[\/\\\u0000-\u001f\u007f]/.test(part)||/%(?:2e|2f|5c)/i.test(part)))return null;
+return prefix+parts.map(encodeURIComponent).join('/');
+}catch{return null;}
 }
 function hasBody(item){return item.body.length>0;}
 function destination(item){return safeUrl(item.url)||safeUrl(item.attachment);}
@@ -200,9 +205,18 @@ const file=resourceFile(raw.file,raw.resourceType);if(!file)throw new Error('资
 return {id:'resource-'+index,category:'resources',resourceType:raw.resourceType,title:raw.title.trim(),
 description:typeof raw.description==='string'?raw.description:'',file,
 cover:resourceFile(raw.cover,'image'),subtitles:resourceFile(raw.subtitles,'subtitles'),
-author:typeof raw.author==='string'?raw.author:'',date:raw.date.slice(0,10),
+author:typeof raw.author==='string'?raw.author:'',downloadName:typeof raw.downloadName==='string'?raw.downloadName:'',date:raw.date.slice(0,10),
 tags:Array.isArray(raw.tags)?raw.tags.filter(t=>typeof t==='string'):[],
 body:[],url:'',attachment:'',kind:RESOURCE_TYPES[raw.resourceType]};
+}
+function resourceDownloadName(item){
+const original=decodeURIComponent(new URL(item.file,location.href).pathname.split('/').pop());
+const extension=original.split('.').pop().toLowerCase();
+const originalStem=original.slice(0,-extension.length-1);
+let stem=item.downloadName?.trim()||(/^file(?:-\d+)?$/i.test(originalStem)?item.title:originalStem);
+if(stem.toLowerCase().endsWith('.'+extension))stem=stem.slice(0,-extension.length-1);
+stem=stem.replace(/[<>:"/\\|?*\u0000-\u001f\u007f]/g,'-').replace(/[. ]+$/g,'').trim().slice(0,150)||'download';
+return stem+'.'+extension;
 }
 function resourceCard(item){
 const card=make('article','card resource-card');card.id='card-'+item.id;
@@ -239,8 +253,9 @@ if(item.author)fragment.append(make('p','resource-meta','作者 / 创作者：'+
 if(item.description)fragment.append(make('p','',item.description));
 const downloads=make('div','resource-downloads');
 const format=new URL(item.file,location.href).pathname.split('.').pop().toLowerCase();
-const open=externalLink(item.file,item.resourceType==='book'?(format==='pdf'?'打开 PDF 阅读 ↗':'打开 EPUB 文件 ↗'):'打开原文件 ↗');
-const download=externalLink(item.file,'下载'+RESOURCE_TYPES[item.resourceType]);download.download='';
+const open=externalLink(item.file,item.resourceType==='book'?(format==='pdf'?'打开 PDF 阅读 ↗':'下载 EPUB 阅读 ↓'):'打开原文件 ↗');
+if(item.resourceType==='book'&&format==='epub')open.download=resourceDownloadName(item);
+const download=externalLink(item.file,'下载'+RESOURCE_TYPES[item.resourceType]);download.download=resourceDownloadName(item);
 downloads.append(open,download);fragment.append(downloads);
 if(item.resourceType==='book'&&format==='epub')fragment.append(make('p','small','EPUB 需下载后用电子书阅读器打开。'));
 $('reader-body').replaceChildren(fragment);$('reader').showModal();$('reader').scrollTop=0;
