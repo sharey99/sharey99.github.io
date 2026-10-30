@@ -4,7 +4,8 @@ layout: null
 [
 {%- assign comma = "" -%}
 {%- for group in site.data.cards -%}
- {%- assign tab = site.data.navigation[group[0]] -%}
+ {%- assign category_id = group[0] -%}
+ {%- assign tab = site.data.navigation[category_id] -%}
  {%- if tab and tab.hidden != true -%}
   {%- for record in group[1] -%}
     {{- comma -}}{"category":{{ group[0] | jsonify }}
