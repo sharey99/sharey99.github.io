@@ -261,7 +261,7 @@ for(const button of document.querySelectorAll('[data-resource-type]'))button.set
 const emptyShelf=activeCategory==='resources'&&!items.some(i=>i.category==='resources')&&!$('search').value.trim();
 const emptyPersonal=activeCategory===HOME_CATEGORY&&!items.some(i=>i.category===HOME_CATEGORY)&&!$('search').value.trim();
 $('empty').querySelector('h3').textContent=emptyPersonal?'个人收藏还空着':emptyShelf?'资源书架还空着':'这个角落暂时没有找到';
-$('empty').querySelector('p').textContent=emptyPersonal?'在后台左侧打开“首页与收藏 → 个人收藏”，添加你常用的网站或链接。':emptyShelf?'书籍、图片与视频，会慢慢整理到这里。':'试试更短的关键词，或者换个分类逛逛。';
+$('empty').querySelector('p').textContent=emptyPersonal?'在后台左侧打开“个人收藏”，添加你常用的网站或链接。':emptyShelf?'书籍、图片与视频，会慢慢整理到这里。':'试试更短的关键词，或者换个分类逛逛。';
 $('clear-search').hidden=!$('search').value;
 const parentLabel=CATEGORIES.find(c=>c.id===activeCategory)?.label||'个人收藏';
 const childLabel=activeSubcategory==='none'?'未分类':CATEGORIES.find(c=>c.id===activeCategory)?.children?.find(c=>c.id===activeSubcategory)?.label;
@@ -280,7 +280,7 @@ function revealCollection(smooth=false){
 function selectCategory(id){activeCategory=id;activeResourceType='all';activeSubcategory='all';render();revealCollection(true);}
 function openArticle(item){
 $('reader-title').textContent=item.title;
-$('reader-meta').textContent=CATEGORIES.find(c=>c.id===item.category).label+' / '+item.date;
+$('reader-meta').textContent=CATEGORIES.find(c=>c.id===item.category).label+(item.date?' / '+item.date:'');
 const fragment=document.createDocumentFragment();
 if(item.kind==='示例文章')fragment.append(make('p','sample-note','这是一篇用于展示的示例文章。发布自己的笔记时，请替换为真实内容与日期，并修改条目类型。'));
 for(const block of item.body||[]){if(block.heading)fragment.append(make('h3','',block.heading));if(block.text)fragment.append(make('p','',block.text));}
@@ -375,7 +375,7 @@ kind:typeof raw.kind==='string'&&raw.kind.trim()?raw.kind:'个人分享',
 icon:Object.hasOwn(ICONS,raw.icon)?raw.icon:'note',
 tone:['green','blue','peach','purple','yellow'].includes(raw.tone)?raw.tone:'green',
 url:raw.url||'',attachment:raw.attachment||'',body:[]};
-if(!item.title||!CATEGORIES.some(c=>c.id===item.category)||!/^\d{4}-\d{2}-\d{2}$/.test(item.date))throw new Error('标题、分类或日期不正确');
+if(!item.title||!CATEGORIES.some(c=>c.id===item.category)||((item.date||item.category!==HOME_CATEGORY)&&!/^\d{4}-\d{2}-\d{2}$/.test(item.date)))throw new Error('标题、分类或日期不正确');
 if(item.url&&!safeUrl(item.url))throw new Error('外部网址不正确');
 if(item.attachment&&!safeUrl(item.attachment))throw new Error('附件路径不正确');
 if(raw.body!=null&&!Array.isArray(raw.body))throw new Error('正文需要段落列表');

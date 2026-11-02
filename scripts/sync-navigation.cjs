@@ -15,14 +15,23 @@ function recordsFromHome(home){
 }
 function generate(base,records,home={}){
  const settings=clone(base.home.items[0]);settings.label='首页设置';settings.operations={create:true,rename:false,delete:false};settings.fields=[categoryField,websiteField,...settings.fields.filter(x=>!['categories','websiteSections'].includes(x.name))];
- const catalog={name:'collection',label:'首页与收藏',type:'group',items:[settings]};
+ const catalog={items:[settings]};
  const tabs=Object.entries(records).map(([id,x])=>({id,...x})).sort((a,b)=>(a.order??1e9)-(b.order??1e9)||a.id.localeCompare(b.id));
  for(const tab of tabs){
   if(tab.id==='resources'){const group=clone(base.resources);group.label=tab.title;catalog.items.push(group);}
   else if(tab.id==='tools'){catalog.items.push({name:'tools',label:tab.title,type:'group',items:websiteSections(home).map(section=>{const item=clone(base.collection);item.name='tools-'+section.folder;item.label=section.title;item.path='_data/cards/tools/'+section.folder;item.fields=item.fields.filter(x=>x.name!=='subcategory');return item;})});}
-  else{const item=clone(base.collection);item.name=tab.id;item.label=tab.title;item.path='_data/cards/'+tab.id;item.fields=item.fields.filter(x=>x.name!=='subcategory');catalog.items.push(item);}
+  else{const item=clone(base.collection);item.name=tab.id;item.label=tab.title;item.path='_data/cards/'+tab.id;item.fields=item.fields.filter(x=>x.name!=='subcategory');
+   if(tab.id==='personal'){
+    const fields=Object.fromEntries(item.fields.map(field=>[field.name,field]));
+    fields.title.label='名称';fields.url.label='网址或链接';fields.url.required=true;fields.url.description='粘贴完整的 HTTPS 链接，例如 https://example.com/。保存后显示在首页个人收藏。';
+    fields.description.label='简介（可选）';fields.description.required=false;
+    fields.date.label='收录日期（可选）';fields.date.required=false;fields.date.description='可留空；按最近收录排序时，未填日期的卡片排在最后。';
+    item.fields=['title','url','description','tags','order','date','kind','icon','tone','attachment','body'].map(name=>fields[name]).filter(Boolean);
+    item.view.fields=['title','url','description'];item.view.search=['title','url','description','tags'];
+   }
+   catalog.items.push(item);}
  }
- return {media:base.media,content:[catalog,clone(base.about),clone(base.support)]};
+ return {media:base.media,content:[...catalog.items,clone(base.about),clone(base.support)]};
 }
 function synchronize(target=root){
  const read=file=>JSON.parse(fs.readFileSync(file,'utf8').replace(/^\uFEFF/,''));
