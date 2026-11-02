@@ -24,7 +24,7 @@
   "content": [
     {
       "name": "collection",
-      "label": "全部收藏",
+      "label": "个人收藏",
       "type": "group",
       "items": [
         {
