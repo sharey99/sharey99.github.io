@@ -15,10 +15,9 @@ function recordsFromHome(home){
 }
 function generate(base,records,home={}){
  const settings=clone(base.home.items[0]);settings.label='首页设置';settings.operations={create:true,rename:false,delete:false};settings.fields=[categoryField,websiteField,...settings.fields.filter(x=>!['categories','websiteSections'].includes(x.name))];
- const catalog={name:'collection',label:records.all?.title||'全部收藏',type:'group',items:[settings]};
+ const catalog={name:'collection',label:'首页与收藏',type:'group',items:[settings]};
  const tabs=Object.entries(records).map(([id,x])=>({id,...x})).sort((a,b)=>(a.order??1e9)-(b.order??1e9)||a.id.localeCompare(b.id));
  for(const tab of tabs){
-  if(tab.id==='all')continue;
   if(tab.id==='resources'){const group=clone(base.resources);group.label=tab.title;catalog.items.push(group);}
   else if(tab.id==='tools'){catalog.items.push({name:'tools',label:tab.title,type:'group',items:websiteSections(home).map(section=>{const item=clone(base.collection);item.name='tools-'+section.folder;item.label=section.title;item.path='_data/cards/tools/'+section.folder;item.fields=item.fields.filter(x=>x.name!=='subcategory');return item;})});}
   else{const item=clone(base.collection);item.name=tab.id;item.label=tab.title;item.path='_data/cards/'+tab.id;item.fields=item.fields.filter(x=>x.name!=='subcategory');catalog.items.push(item);}
